@@ -1,0 +1,47 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js -e js,mjs,json,graphql,.env",
+    "create-env": "printenv > .env",
+    "deploy": "gcloud app deploy --project motogym-online-api",
+    "deploy-to-dev": "gcloud app deploy --project motogym-online-dev-api"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/demansn/motogym.online.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/demansn/motogym.online/issues"
+  },
+  "homepage": "https://github.com/demansn/motogym.online#readme",
+  "dependencies": {
+    "@google-cloud/storage": "^6.0.1",
+    "apollo-server": "^3.8.1",
+    "apollo-server-express": "^3.8.1",
+    "aws-sdk": "^2.1148.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "fs-capacitor": "^7.0.1",
+    "graphql": "^16.5.0",
+    "graphql-upload": "^15.0.1",
+    "i18next": "^21.8.7",
+    "i18next-node-fs-backend": "^2.1.3",
+    "jose": "^4.8.1",
+    "moment": "^2.29.3",
+    "mongoose": "^6.3.5",
+    "node-mailjet": "^3.4.1",
+    "nodemailer": "^6.7.5",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}

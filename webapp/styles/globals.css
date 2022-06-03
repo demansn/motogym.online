@@ -1,0 +1,120 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+#__next, main {
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.flag-container {
+  position: relative;
+  display: inline-block;
+  width: 1.33333333em;
+  margin-right: 8px;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.profile-avatar-container {
+  padding: 0!important;
+  height: 112px;
+}
+
+.profile-avatar {
+  object-fit: contain;
+  max-height: 120px!important;
+  min-width: unset!important;
+  min-height: unset!important;
+}
+
+.user-info-col {
+  padding: 1em;
+
+}
+
+.user-info > .user-info-firstName, .user-info-lastName, .user-info-whereFrom {
+  padding: 0;
+  margin: 0;
+}
+
+.user-info > .user-info-whereFrom {
+  margin-top: .5em;
+}
+
+.driver:hover {
+  cursor: pointer;
+}
+
+.driver-card-row {
+  padding: .5em;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+}
+
+.lineTitle-line {
+  margin-bottom: 0;
+}
+
+.lineTitle-title {
+  margin-bottom: 1em;
+}
+
+.textWithTitle-title {
+  line-height: 1!important;
+  margin-top: .5em;
+  margin-bottom: 0!important;
+}
+
+.textWithTitle-text {
+
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+.wheel-spinner {
+  -webkit-animation:spin 1s linear infinite;
+  -moz-animation:spin 1s linear infinite;
+  animation:spin 1s linear infinite;
+}
+
+.image-container {
+  width: 100%;
+}
+
+.image-container span {
+  position: unset !important;
+}
+
+.image-container .image {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
+}

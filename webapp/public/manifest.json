@@ -1,0 +1,112 @@
+{
+  "short_name": "motogym.online",
+  "name": "Motogymkhana online",
+  "description": "Online competitions, championships and various trials on MotoGymkhana",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "32x32 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "shortcuts": [
+    {
+      "name": "motogym.online",
+      "short_name": "Motogymkhana online",
+      "description": "Online competitions, championships and various trials on MotoGymkhana",
+      "url": "/en/",
+      "icons": [    {
+        "src": "favicon.ico",
+        "sizes": "32x32 16x16",
+        "type": "image/x-icon"
+      },
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "/android-chrome-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }]
+    },
+    {
+      "name": "motogym.online",
+      "short_name": "Motogymkhana online",
+      "description": "Онлайн соревнования, чемпионаты и различные испытания по МотоДжимхане",
+      "url": "/ru",
+      "icons": [    {
+        "src": "favicon.ico",
+        "sizes": "32x32 16x16",
+        "type": "image/x-icon"
+      },
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "/android-chrome-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }]
+    },
+    {
+      "name": "motogym.online",
+      "short_name": "Motogymkhana online",
+      "description": "Онлайн-змагання, чемпіонати та різні випробування по МотоДжимхане",
+      "url": "/ua",
+      "icons": [    {
+        "src": "favicon.ico",
+        "sizes": "32x32 16x16",
+        "type": "image/x-icon"
+      },
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "/android-chrome-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }]
+    },
+    {
+      "name": "motogym.online",
+      "short_name": "Motogymkhana online",
+      "description": "Online competitions, championships and various trials on MotoGymkhana",
+      "url": "/jp",
+      "icons": [    {
+        "src": "favicon.ico",
+        "sizes": "32x32 16x16",
+        "type": "image/x-icon"
+      },
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "/android-chrome-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+.competition-result-time_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.competition-result-time_time_penalty {
+    display: flex;
+}
+
+.competition-result-time_time {
+    font-weight: bold;
+}
+
+.competition-result-time_penalty {
+    margin-left: 0.1em;
+    font-weight: bold;
+}
+
+.competition-result-time-gap {
+    font-size: 0.8rem;
+    margin-left: 0.1em;
+}

@@ -1,0 +1,310 @@
+scalar CompetitionResultTime
+scalar Date
+scalar Upload
+
+enum Gender {
+    male
+    female
+}
+
+enum CompetitionResultStatus {
+    pending
+    approve
+    rejected
+    withoutvideo
+}
+
+type LocalizedDescription {
+    ua: String
+    ru: String
+    en: String!
+    ja: String
+}
+
+type TypeCompetition {
+    id: ID!
+    name: String
+    regulation: String
+}
+
+type Competition {
+    id: ID!
+    name: String!
+    type: TypeCompetition!
+    description: LocalizedDescription!
+    racetrack: String!
+    author: ID
+    results(filter: CompetitionResultsFilter): [CompetitionResult!]
+    start: String
+    finish: String
+    created: String
+}
+
+input CompetitionResultsFilter {
+    user: ID
+    id: ID
+    status: CompetitionResultStatus
+    best: Boolean
+}
+
+input ChampionshipFilter {
+    id: ID
+}
+
+input ChampionshipRoundFilter {
+    id: ID
+    number: Int
+}
+
+input ChampionshipRoundResultFilter {
+    id: ID
+    user: ID
+    moderate: Boolean
+    best: Boolean
+}
+
+type CompetitionResult {
+    id: ID!
+    time: CompetitionResultTime
+    timeMilliseconds: Int
+    fine: Int
+    totalTime: CompetitionResultTime
+    totalTimeMilliseconds: Int
+    timeRatio: Float
+    gap: CompetitionResultTime
+    gapMilliseconds: Int
+    date: Date
+    user: User
+    motorcycle: Motorcycle
+    video: String
+    moderate: Boolean
+    status: CompetitionResultStatus
+    position: Int
+    competition: Competition
+}
+
+type ChampionshipRoundResult {
+    id: ID!
+    driver: User
+    motorcycle: Motorcycle
+    points: Int
+    time: CompetitionResultTime
+    timeMilliseconds: Int
+    penalty: Int
+    totalTime: CompetitionResultTime
+    totalTimeMilliseconds: Int
+    gap: CompetitionResultTime
+    gapMilliseconds: Int
+    timeRatio: Float
+    date: Date
+    video: String
+    moderate: Boolean
+    position: Int
+}
+
+type ChampionshipRound {
+    id: ID!
+    name: String
+    racetrack: String
+    start: String
+    finish: String
+    created: String
+    finished: Boolean
+    started: Boolean
+    results(filter: ChampionshipRoundResultFilter): [ChampionshipRoundResult]
+}
+
+type Championship {
+    id: ID!
+    name: String
+    description: String
+    author: User
+    rounds(filter: ChampionshipRoundFilter): [ChampionshipRound]
+}
+
+type Motorcycle {
+    id: ID!
+    user: User
+    name: String
+    model: String
+    brand: String
+    avatar: String
+    productionYear: String
+}
+
+type UserProfile {
+    firstName: String
+    lastName: String
+    birthday: String
+    gender: String
+    country: String
+    city: String
+    avatar: String
+    age: Int
+}
+
+type User {
+    id: ID!
+    email: String!
+    accessLevel: Int
+    isVerified: Boolean
+    profile: UserProfile!
+    motorcycles: [Motorcycle!]!
+    competitionResults: [CompetitionResult!]!
+}
+
+type AuthPayload {
+    token: String
+    user: User
+}
+
+input RegistrationInput {
+    email: String!
+    password: String!
+}
+
+input ProfileInput {
+    firstName: String
+    lastName: String
+    birthday: String
+    gender: String
+    country: String
+    city: String
+}
+
+input LocalizedDescriptionInput {
+    ua: String
+    ru: String
+    en: String!
+    ja: String
+}
+
+input CreateCompetitionInput {
+    name: String!
+    description: LocalizedDescriptionInput!
+    type: ID!
+    racetrack: Upload!
+    start: String
+    finish: String
+}
+
+input EditCompetitionInput {
+    id: ID!
+    name: String
+    description: LocalizedDescriptionInput
+    racetrack: Upload
+    start: String
+    finish: String
+}
+
+input MotorcycleInput {
+    id: String
+    model: String!
+    brand: String!
+    name: String
+    productionYear: String
+    avatar: Upload
+}
+
+input ResultInput {
+    competitionID: String!
+    motorcycleID: String!
+    time: CompetitionResultTime!
+    video: String
+    date: String
+}
+
+input EditResultInput {
+    competition: ID!
+    result: ID!
+    fine: Int
+    status: CompetitionResultStatus
+    message: String
+}
+
+input CreateChampionshipRound {
+    name: String
+    racetrack: Upload
+    start: String!
+    finish: String!
+}
+
+input CreateChampionship {
+    name: String!
+    description: LocalizedDescriptionInput!
+    rounds: [CreateChampionshipRound!]!
+}
+
+input EditChampionshipRound {
+    id: ID!
+    name: String
+    racetrack: String
+    start: String
+    finish: String
+}
+
+input EditChampionship {
+    id: ID!
+    name: String
+    description: LocalizedDescriptionInput
+    rounds: [EditChampionshipRound]
+}
+
+input AddResultToChampionshipRound {
+    championship: ID!
+    round: ID!
+    motorcycle: ID!
+    time: CompetitionResultTime!
+    video: String!
+}
+
+type AddResultToChampionshipRoundPayload {
+    championship: Championship
+    round: ChampionshipRound
+    result: ChampionshipRoundResult
+}
+
+input CompetitonResultsFind {
+    userID: ID
+    competitionID: ID
+}
+
+input CompetitionsInputFilter {
+    type: String
+}
+
+type Query {
+    me: User
+    drivers: [User!]!
+    user(id: ID!): User!
+    competitions(filter: CompetitionsInputFilter): [Competition]
+    competitionTypes: [TypeCompetition!]!
+    typeCompetition(name: String!): TypeCompetition
+    competition(id: ID!): Competition
+    championships(filter: ChampionshipFilter): [Championship]
+    championship(id: ID!): Championship
+    championshipByName(name: String!): Championship
+#    resultsOfCompetitions(find: CompetitonResultsFind): [CompetitionResult]
+}
+
+type Mutation {
+    login(email: String!, password: String!): AuthPayload!
+    userVerification(token: String!): AuthPayload!
+    passwordRecoveryRequest(email: String!): Boolean
+    resetPassword(token: String! password: String!): AuthPayload!
+    registration(registrationInput: RegistrationInput!): Boolean!
+    profile(profileInput: ProfileInput!): User
+    userAvatar(file: Upload!): User
+
+    createCompetition(competitionInput: CreateCompetitionInput!): Competition!
+    editCompetition(competitionInput: EditCompetitionInput!): Competition!
+    competitionResult(fields: EditResultInput!): CompetitionResult
+    addResult(resultInput: ResultInput!): CompetitionResult
+
+    createChampionship(fields: CreateChampionship!): Championship
+    editChampionship(fields: EditChampionship!): Championship!
+    addResultChampionshipRound(fields: AddResultToChampionshipRound): AddResultToChampionshipRoundPayload
+
+    motorcycle(motorcycleInput: MotorcycleInput!): Motorcycle
+    removeMotorcycle(id: String!): Boolean
+}

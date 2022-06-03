@@ -1,0 +1,33 @@
+.racetrack-input > .racetrack-image-container  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 256px;
+    max-height: 512px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    margin-bottom: 1em;
+}
+
+.racetrack-input > .racetrack-image-container > .racetrack-icon {
+    object-fit: cover;
+    object-position: center;
+}
+
+.racetrack-input > .racetrack-image-container > .racetrack-image {
+    object-fit: contain;
+    object-position: center;
+    min-height: 256px;
+    max-height: 512px;
+    max-width: 100%;
+    padding: 8px;
+}
+
+.racetrack-input.is-invalid > .racetrack-image-container  {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + .75rem);
+}
+
+.racetrack-input.is-invalid > .invalid-feedback  {
+    display: block;
+}

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "motogym-online",
+  "private_key_id": "da25e24871cd64ce48303f0faef4114aa4bf8acf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDMbGOuqEReVksS\nxbVfSsURyguFl8OTvNYkRRj7nhWerV5fS1t/udh8AosVmeN7I4wnQtehe5/l0Q40\nqyQL5qkLkEPJrw3ipEgUREsMhOpeGns4HwwLVMG38RfHoVL+0PA8XzbPqKakk2vF\nrOaKFhV4zhWui9faenlSXQnuaGFRL0SeHvyAhX3C1ARsvqkezL0xhEmd+jwaQUKL\nKCVbKkQ7JUUfpC2xKhzdbfrmMPFt+x/yhoZ8wB0E6lliyW5cearNZ8QyhWuHhFXn\n7bV20t/lDIX67KKNEkYU4tV5gupLZRSlhgX6X/PLJpVNN+yHcL5Y+40MUR2rkfui\nlCHkljnTAgMBAAECggEABbAYX/I3oMZW5WlR4Bpk/Fc6VdfArdopvS2dAddGs7kQ\nMKeYnqetodmyRAIZpcH58te1xzz42HymIAoJATnER1mWwURZJw66ILI7wlfqa37i\nIdAfVitgDn2rUzcmZ4epv4xIqqN/K4IclA35BiuSIl/dk5M5iM8yk/uZvKPz3T3e\nJXKL8MYd2C96SojqBkwvelXe+7j+bGo/6DMfxcbKOmhC3xo/RqrGamtIYXv6zlfW\nmGLU9NNnw1w50M23s3Wi8oWxzHqevYk/4LwPE/Ivo24Kpc+G5jYhtBVthfnW52cX\n7qw5lFPzGxeMXxfuuavlfTZ0KvVae1805CR97yp7rQKBgQD+0UVb5DdUPjDrkbGJ\ne2w55wP0eGdc11jzstLcRFPVX4kSlByDkcR5CC+nBil9MJnIfJJ6TJMoBWz6HsyI\nD1lkaxOm8yvLgzO9q7nt0rse+MJgQ1D3YSLO+vXE+h/pCm28MFdnzr0cC91LgO6r\nvzbpy1QmO+d5d7aAaQJOAJVrfwKBgQDNXz/GwGCbVNwHPCwAOz+xeednYl2S5v+R\nQZ7scjjqX2/vhzs9VTqrUQn9kYA35a/T9GJYd7kxiepKIgJN0EXFn/CIewbnqefO\nW4SZqavaPzwG/iEUSi9atl8dozSNifgSFdXtM8ZM5XNXC30nAY7QQZImP1E41+A3\nuAG1DZHrrQKBgBjwRkd+CGQ4SfVkJun7qFXqZBqzBfqyIMSJBdYE4eeKGBI3aKr/\nwyjNQkyob7sO3J4ggv1xLR3HmijIht/yEJ+hUyUNu4WJa7Duc53w99tKIUvmirAL\nU6rKKO+EQ0c9fAvk90jzlNJ/3sKa9cDdT/SFr9CmIDtlGflrTYxwxi7lAoGBAMAI\n/Zi6UFtOuUNmp3o77K3mYFPSrc7sgzLvGkzb7Y5yWTevytvp8yc4atAZGryp4ISf\n8snogVnqLRLOxDrAsk095euopmc+/4t9FfudpR05ncaoIIRZbfgzqbML5dsnlLhM\nhLH9hMJolzZgftFXapQfjCqJcEhny7guLiJ/IuAtAoGANf05jnrTzHSshAVIrrSP\nUuQ3TNSh/cv9qwQLu6voXjgE3rO6+FCTnp8F1tKARwnzVmj7mjKiJQaUY1kzDAx0\n+AvyN2B8IFZWmkMBJ1IQsmyayWpkC+gxTsIEsaLHIZBGA1760YxWqjzuVuYfpu1n\nf2vXofszQl+MGd6S8m3AUJg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "motogym-online-files-manager@motogym-online.iam.gserviceaccount.com",
+  "client_id": "108945492777393201144",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/motogym-online-files-manager%40motogym-online.iam.gserviceaccount.com"
+}

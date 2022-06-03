@@ -1,0 +1,8 @@
+{
+  "Confirm your email address": "Подтвердите Ваш электронный адрес",
+  "Password recovery": "Восстановление пароля",
+  "To reset your password click on the link": "Чтобы сбросить пароль, нажмите на ссылку",
+  "You have just registered on motogym.online website. To confirm e-mail, click on the link": "Вы только что зарегистрировались на сайте motogym.online. Чтобы подтвердить электронную почту, нажмите на ссылку",
+  "Your result for {{competition}} competition was rejected! Reason for rejection - {{message}}": "Ваш результат для {{competition}} соревнования был отклонен! Причина отказа - {{message}}",
+  "Your result was rejected": "Ваш результат был отклонен"
+}

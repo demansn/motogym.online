@@ -1,0 +1,27 @@
+.competition-info-container {
+    padding-bottom: 8px;
+}
+
+.competition-info-container .competition-info-name {
+
+}
+
+.competition-info-container .competition-info-type {
+
+}
+
+.competition-info-container .competition-info-description {
+
+}
+
+.competition-info-container .competition-info-racetrack {
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    object-fit: contain;
+    object-position: center;
+    min-height: 256px;
+    max-height: 512px;
+    max-width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+}
