@@ -29,7 +29,7 @@ const resolver = {
         }
     },
     Query: {
-        user: (_, {id}, {dataSources}) => dataSources.models.User.findOne({ _id: ObjectID(id)}),
+        user: async (_, {id}, {dataSources}) => await dataSources.models.User.findOne({ _id: id}),
         drivers: async (_, __, {dataSources}) => {
             const drivers = await dataSources.models.User.find({'isVerified': true});
 

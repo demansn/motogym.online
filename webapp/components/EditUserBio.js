@@ -1,6 +1,6 @@
 import Col from "react-bootstrap/Col";
 import {Button, Form, Row} from "react-bootstrap";
-import {CountryDropdown} from "react-country-region-selector";
+import countryRegionData from 'country-region-data/dist/data-umd';
 import React, {useState} from "react";
 import gql from "graphql-tag";
 import {Loading} from "./Loading";
@@ -90,23 +90,18 @@ export function EditUserBio({userProfile = {}}) {
                     </Row>
                     <Row>
                         <Form.Group sm={6} as={Col} controlId="genderSelect">
-                            <Form.Label>{t('Gender')}</Form.Label>
-                            <Form.Control
-                                as="select"
+                            <Form.Label>
+                                <T>Gender</T>
+                            </Form.Label>
+                            <Form.Select
                                 placeholder={t('Choose gender')}
                                 value={profileInput.gender}
                                 onChange={({target}) => editProfile("gender", target.value)}
                             >
-                                <option value=''>
-                                    <T>Choose gender</T>
-                                </option>
-                                <option value='male'>
-                                    <T>Male</T>
-                                </option>
-                                <option value='female'>
-                                    <T>Female</T>
-                                </option>
-                            </Form.Control>
+                                <option value='' label={t('Choose gender')} />
+                                <option value='male' label={t('Male')} />
+                                <option value='female' label={t('Female')} />
+                            </Form.Select>
                         </Form.Group>
                         <FormGroupInput
                             id="birthday"
@@ -123,11 +118,16 @@ export function EditUserBio({userProfile = {}}) {
                             <Form.Label>
                                 <T>Country</T>
                             </Form.Label>
-                            <Form.Control
-                                as={CountryDropdown}
-                                value={profileInput.country}
-                                onChange={value => editProfile("country", value)}
-                            />
+                                <Form.Control
+                                    as={Form.Select}
+                                    value={profileInput.country}
+                                    onChange={({target}) => editProfile("country", target.value)}
+                                >
+                                    <option value='' label={t('Select country')} />
+                                    {countryRegionData.map(({countryName}) => {
+                                        return <option key={countryName} value={countryName} label={countryName} />
+                                    })}
+                                </Form.Control>
                         </Form.Group>
                         <FormGroupInput
                             id="city"

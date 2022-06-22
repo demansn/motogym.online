@@ -8,18 +8,27 @@ const getPayload = async function(token) {
     }
 
     try {
-        return await jwtVerify(token, secretOrKey);
+        return await jwtVerify(token, new TextEncoder().encode(secretOrKey));
     } catch (e) {
+        console.log(e);
+
         return null;
     }
 };
 
 const getToken = async function(user) {
-    const payload = { id: user.id, role: user.role, email: user.email };
+    try {
+        const payload = { id: user.id, role: user.role, email: user.email };
 
-    return await new SignJWT(payload)
-        .setExpirationTime('336d')
-        .sign(secretOrKey)
+        return await new SignJWT(payload)
+            .setProtectedHeader({ alg: 'HS256' })
+            .setExpirationTime('336d')
+            .sign(new TextEncoder().encode(secretOrKey))
+    } catch (e) {
+        console.log(e);
+
+        return null;
+    }
 };
 
 const generateEmailConfirmationUri = async function(user, origin) {

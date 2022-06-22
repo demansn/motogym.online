@@ -156,9 +156,7 @@ const resolver = {
             const {Competition} = dataSources.models;
             const competitions = await Competition.find({})
                                     .populate('results.user')
-                                    .populate('type')
-
-            console.log(competitions[2]);
+                                    .populate('type');
 
             return competitions.map(parseCompetition);
         },

@@ -33,9 +33,9 @@ const createContext = async ({_res, req, _connection}) => {
     };
 
     try {
-        const userPayload = await getPayload(token);
+        const {payload} = await getPayload(token);
 
-        currentUser = await (userPayload ? models.User.findById(userPayload.id) : null);
+        currentUser = await (payload ? models.User.findById(payload.id) : null);
 
         await initI18n({lng: language});
     } catch (e) {
