@@ -28,6 +28,26 @@ export default function ResetPasswordPage() {
         }
     };
 
+    const FormContent = () => (
+        <>
+            <Form.Group controlId="formGroupEmail" className="mb-3">
+                <Form.Control
+                    type="password"
+                    placeholder={t("Enter new password")}
+                    onChange={({target}) => setPassword(target.value)}
+                    value={password}
+                    isInvalid={invalidPassword !== ''}
+                />
+                <Form.Control.Feedback type="invalid">
+                    <T>{invalidPassword}</T>
+                </Form.Control.Feedback>
+            </Form.Group>
+            <Button className="w-100" onClick={onClickSetNewPassword}>
+                <T>Set new password</T>
+            </Button>
+        </>
+    )
+
 
     return (
         <Container className="h-100">
@@ -83,26 +103,8 @@ function MessageByStatus({status}) {
             </div>
         );
     }
+
+    return null;
 }
 
-export const getServerSideProps = withAppContext({
-    accessLevel: 'guest',
-    callback: async ({query}) => {
-        const {t: token = ''} = query;
-
-        if (!token) {
-            return {
-                redirect: {
-                    destination: '/',
-                    permanent: false,
-                }
-            };
-        }
-
-        return {
-            props: {
-                token
-            }
-        };
-    }
-});
+export const getServerSideProps = withAppContext({accessLevel: 'guest'});
