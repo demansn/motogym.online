@@ -52,7 +52,7 @@ export function withAppContext(options = {}) {
         const callbackResult = await callback({...context, ...appContext});
 
         if (callbackResult.props) {
-            callbackResult.props = {...callbackResult.props, ...appContext.appProps};
+            callbackResult.props = {...appContext.appProps, ...callbackResult.props};
         }
 
         return callbackResult;

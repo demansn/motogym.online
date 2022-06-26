@@ -54,6 +54,7 @@ const DATA_FOR_EDIT_USER_PROFILE = gql`
 `;
 
 export const getServerSideProps = withAppContext({
+    accessLevel: 'user',
     callback: async ({apolloClient}) => {
         const {data} = await apolloClient.query({query: DATA_FOR_EDIT_USER_PROFILE});
         const {me: user} = data;

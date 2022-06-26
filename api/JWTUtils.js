@@ -8,7 +8,9 @@ const getPayload = async function(token) {
     }
 
     try {
-        return await jwtVerify(token, new TextEncoder().encode(secretOrKey));
+        const result = await jwtVerify(token, new TextEncoder().encode(secretOrKey));
+
+        return result.payload;
     } catch (e) {
         console.log(e);
 

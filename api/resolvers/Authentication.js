@@ -1,5 +1,6 @@
 const {validateRegistrationInput} = require("../validators");
 const bcrypt = require('bcryptjs');
+const {getToken} = require("../JWTUtils");
 
 const resolver = {
     Trivial: {},
@@ -7,7 +8,7 @@ const resolver = {
         me: (parent, args, { currentUser }) => currentUser
     },
     Mutation: {
-        login: async (_, {email, password}, {createRandomToken, dataSources, hasRole, getToken, origin, language, ACCESS_LEVEL}) => {
+        login: async (_, {email, password}, {createRandomToken, dataSources, hasRole, origin, language, ACCESS_LEVEL}) => {
             const {models, emailTransporter} = dataSources;
             const User = models.User;
 
@@ -102,7 +103,7 @@ const resolver = {
             return false;
         },
         userVerification:  async (_, {token}, context) => {
-            const {dataSources, getToken} = context;
+            const {dataSources} = context;
             const {models} = dataSources;
             const {User} = models;
             const user = await User.findOne({'confirmationToken.token':token});

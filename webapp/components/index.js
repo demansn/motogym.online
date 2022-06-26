@@ -15,3 +15,4 @@ export * from './DateInput';
 export * from './RacetrackInput';
 export * from './TimeInputField';
 export * from './CompetitionNavTabs';
+export * from './email-verification';

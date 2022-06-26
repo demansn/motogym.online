@@ -78,7 +78,7 @@ function useProvideAuth(defaultAuthToken) {
     };
 
     const setToken = async (authToken) => {
-        const result = setAuthTokenRequest(authToken);
+        const result = await setAuthTokenRequest(authToken);
 
         if (result) {
             setAuthToken(authToken);

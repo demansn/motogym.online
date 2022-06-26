@@ -17,6 +17,7 @@ const graphqlUploadExpress = require("graphql-upload/graphqlUploadExpress.js");
 const {MONGO_USER, MONGO_PASSWORD, MONGO_DB_NAME, MONGO_HOST} = process.env;
 const PATH_TO_CA_CERT = `${__dirname}/config/ca-certificate.cer`
 const MONGO_URI = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DB_NAME}?authSource=admin&replicaSet=motogym-db-backup&tls=true&tlsCAFile=${PATH_TO_CA_CERT}`;
+const MONGO_LOCAL_URI = 'mongodb://localhost/db';
 const secretOrKey = process.env.SECRET_OR_KEY;
 const port = process.env.PORT || 3003;
 
@@ -33,7 +34,7 @@ const createContext = async ({_res, req, _connection}) => {
     };
 
     try {
-        const {payload} = await getPayload(token);
+        const payload = await getPayload(token);
 
         currentUser = await (payload ? models.User.findById(payload.id) : null);
 
@@ -47,7 +48,7 @@ const createContext = async ({_res, req, _connection}) => {
 
 async function start() {
     // Connect to MongoDB
-    await mongoose.connect(MONGO_URI, {
+    await mongoose.connect(MONGO_LOCAL_URI, {
         // useNewUrlParser: true,
         // useUnifiedTopology: true,
     });
