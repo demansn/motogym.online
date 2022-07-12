@@ -1,6 +1,7 @@
 steps:
 - name: "gcr.io/cloud-builders/npm"
-  args: ["i"]
+  entrypoint: npm
+  args: ["i", "-w", "api"]
 - name: "gcr.io/cloud-builders/npm"
   entrypoint: npm
   args: [ "run", "create-env"]
