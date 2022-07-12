@@ -1,4 +1,5 @@
-require('dotenv').config()
+require('dotenv').config();
+const isDev = process.env.NODE_ENV !== 'production';
 const { ApolloServer } = require('apollo-server-express');
 const mongoose = require('mongoose');
 const resolvers = require('./resolvers');
@@ -48,7 +49,7 @@ const createContext = async ({_res, req, _connection}) => {
 
 async function start() {
     // Connect to MongoDB
-    await mongoose.connect(MONGO_LOCAL_URI, {
+    await mongoose.connect(isDev ? MONGO_LOCAL_URI : MONGO_URI, {
         // useNewUrlParser: true,
         // useUnifiedTopology: true,
     });
