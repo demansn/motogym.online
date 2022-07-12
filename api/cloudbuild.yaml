@@ -1,9 +1,9 @@
 steps:
 - name: "gcr.io/cloud-builders/npm"
-  args: ["install -w api"]
+  args: ["i", "-w", "api"]
 - name: "gcr.io/cloud-builders/npm"
   entrypoint: npm
-  args: [ "run -w create-env" ]
+  args: [ "run", "-w", "create-env" ]
   env:
     - 'MONGO_DB_NAME=${_MONGO_DB_NAME}'
     - 'MONGO_HOST=${_MONGO_HOST}'
