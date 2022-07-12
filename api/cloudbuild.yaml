@@ -23,3 +23,5 @@ steps:
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy", "--project", "motogym-online-api"]
 timeout: "1600s"
+options:
+  logging: CLOUD_LOGGING_ONLY
