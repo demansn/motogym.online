@@ -2,7 +2,7 @@ steps:
 - name: "gcr.io/cloud-builders/npm:node-16.15.0"
   entrypoint: npm
   args: ["i", "-w", "api"]
-- name: "gcr.io/cloud-builders/npm:node-16.15."
+- name: "gcr.io/cloud-builders/npm:node-16.15.0"
   entrypoint: npm
   args: [ "run", "create-env", "-w", "api"]
   env:
