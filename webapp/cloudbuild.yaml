@@ -10,6 +10,7 @@ steps:
   env:
     - 'SECRET_OR_KEY=${_SECRET_OR_KEY}'
     - 'API=${_API}'
+    - 'PORT=${_PORT}'
 - name: "node:16.15.0"
   dir: "webapp"
   entrypoint: npm
