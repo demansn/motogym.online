@@ -1,0 +1,16 @@
+steps:
+- name: "node:16.15.0"
+  args: ["i", "-w", "webapp"]
+- name: "node:16.15.0"
+  entrypoint: npm
+  args: [ "run", "create-env", "-w", "webapp" ]
+  env:
+    - 'SECRET_OR_KEY=${_SECRET_OR_KEY}'
+- name: "node:16.15.0"
+  args: ["run", "build", "-w", "webapp"]
+- name: "gcr.io/cloud-builders/gcloud"
+  dir: "api"
+  args: ["app", "deploy", "--project", "motogym-online-web"]
+timeout: "1600s"
+options:
+  logging: CLOUD_LOGGING_ONLY
