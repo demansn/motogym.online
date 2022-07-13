@@ -125,7 +125,7 @@ export function EditUserBio({userProfile = {}}) {
                                 >
                                     <option value='' label={t('Select country')} />
                                     {countryRegionData.map(({countryName}) => {
-                                        return <option key={countryName} value={countryName} label={countryName} />
+                                        return <option key={countryName} value={countryName} label={countryName} />;
                                     })}
                                 </Form.Control>
                         </Form.Group>

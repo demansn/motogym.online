@@ -46,8 +46,7 @@ export default function ResetPasswordPage() {
                 <T>Set new password</T>
             </Button>
         </>
-    )
-
+    );
 
     return (
         <Container className="h-100">
