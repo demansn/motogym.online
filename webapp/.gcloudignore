@@ -1,0 +1,12 @@
+.git
+node_modules
+components
+hooks
+lib
+locales
+pages
+public
+styles
+.env-dev
+.eslintrc.json
+types.d.ts
