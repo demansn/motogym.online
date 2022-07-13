@@ -1,16 +1,19 @@
 steps:
 - name: "node:16.15.0"
+  dir: "webapp"
   entrypoint: npm
-  args: ["i", "-w", "webapp"]
+  args: ["install"]
 - name: "node:16.15.0"
+  dir: "webapp"
   entrypoint: npm
-  args: [ "run", "create-env", "-w", "webapp" ]
+  args: [ "run", "create-env"]
   env:
     - 'SECRET_OR_KEY=${_SECRET_OR_KEY}'
     - 'API=${_API}'
 - name: "node:16.15.0"
+  dir: "webapp"
   entrypoint: npm
-  args: ["run", "build", "-w", "webapp"]
+  args: ["run", "build"]
 - name: "gcr.io/cloud-builders/gcloud"
   dir: "webapp"
   args: ["app", "deploy", "--project", "motogym-online-web"]
