@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start -p 8080",
     "lint": "next lint",
-    "create-env": "printenv > .env"
+    "create-env": "printenv > .env",
+    "gcp-build": "npm run build",
+    "deploy": "gcloud config set project motogym-online-web && gcloud app deploy app.yaml"
   },
   "repository": {
     "type": "git",
