@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache, ApolloLink, concat } from "@apollo/client";
 import {createUploadLink} from "apollo-upload-client";
-const host = process.env.API || 'http://localhost:3003';
+const host = 'https://motogym-online-api.appspot.com' || 'http://localhost:3003';
 const URI = `${host}/graphql`;
 
 function createApolloLink({authorization, locale}) {

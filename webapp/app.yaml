@@ -1,19 +1,16 @@
-env: flex
-runtime: nodejs
+env: standard
+runtime: nodejs16
 service: default
 instance_class: F1
 automatic_scaling:
-  min_num_instances: 1
-  max_num_instances: 10
-  cool_down_period_sec: 180
-  cpu_utilization:
-    target_utilization: 0.9
+  min_idle_instances: automatic
+  max_idle_instances: automatic
+  min_pending_latency: automatic
+  max_pending_latency: automatic
 resources:
   cpu: 2
   memory_gb: 4.6
   disk_size_gb: 10
-network:
-  name: default
 handlers:
   - url: /.*
     secure: always

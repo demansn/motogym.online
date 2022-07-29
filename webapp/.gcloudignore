@@ -1,12 +1,8 @@
 .git
 .gitignore
-components
-hooks
-lib
-locales
-pages
-public
-styles
+node_modules
+.next
+build
 .env-dev
 .eslintrc.json
 types.d.ts
