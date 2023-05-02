@@ -1,5 +1,5 @@
 import {Col, Container, Row} from "react-bootstrap";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import defaultAvatarIcon from '../public/images/avatar-icon.png';
 
 export function DriverCard({driver, onClick}) {
@@ -16,7 +16,7 @@ export function DriverCard({driver, onClick}) {
                         <h5 className="user-info-whereFrom">{city}/{country}</h5>
                     </Col>
                     <Col className="profile-avatar-container d-flex text-center justify-content-center align-items-center align-content-center" sm={4} md={4} xs={4} >
-                        <Image width={200} height={200} src={avatar || defaultAvatarIcon} className="profile-avatar w-100 h-auto" alt={'avatar'} />
+                        <Image width={200} height={200} src={avatar || defaultAvatarIcon} className="profile-avatar w-100 h-auto" alt={'avatar'} dangerouslyAllowSVG={true} />
                     </Col>
                 </Row>
             </Container>

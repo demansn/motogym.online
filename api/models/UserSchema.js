@@ -24,6 +24,7 @@ const UserSchema = new Schema({
     },
     confirmationToken: TokenSchema,
     passwordResetToken: TokenSchema,
+    refreshToken: TokenSchema,
     date: {
         type: Date,
         default: Date.now()

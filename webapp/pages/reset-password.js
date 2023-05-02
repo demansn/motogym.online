@@ -22,7 +22,6 @@ export default function ResetPasswordPage() {
             const {status} = await resetPassword(token, password);
 
             setStatus(status);
-
         } else {
             setInvalidPassword('Password required field and it must be at least 8 characters');
         }

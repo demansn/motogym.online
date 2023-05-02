@@ -1,9 +1,12 @@
 const { validateProfileInput} = require("../validators");
 const { ObjectID } = require('mongodb');
-const { UserInputError } = require('apollo-server-express');
+const {GraphQLError} = require("graphql");
 
 const resolver = {
     Trivial: {
+        User: {
+            id: (user) => user._id,
+        },
         UserProfile: {
             age: (profile) => {
                 if (profile && profile.birthday) {
@@ -18,25 +21,21 @@ const resolver = {
             }
         },
         Motorcycle: {
-            user:  async (parent, args, {dataSources}) => {
-                const user = await dataSources.models.User.findOne({'motorcycles._id': parent._id})
-
-                return user;
+            user:  async (parent, args, {users}) => {
+                return await users.findUser({'motorcycles._id': parent._id});
             },
-            id: (parent) => {
-                return parent._id;
-            }
+            id: (parent) => parent._id.toString()
         }
     },
     Query: {
-        user: async (_, {id}, {dataSources}) => await dataSources.models.User.findOne({ _id: id}),
-        drivers: async (_, __, {dataSources}) => {
-            const drivers = await dataSources.models.User.find({'isVerified': true});
-
-            // check
-            return drivers.filter( ({profile}) => {
-                return profile.firstName && profile.lastName
-            });
+        me: (parent, args, { currentUser }) => currentUser,
+        user: async (_, {id}, {users}) => await  users.findUser({ _id: id}),
+        drivers: async (_, __, {users}) => {
+            return await users.getAll({$and: [
+                    {'profile.firstName': {$exists: true}},
+                    {'profile.lastName': {$exists: true}},
+                    {'isVerified': true}
+                ]});
         }
     },
     Mutation: {
@@ -48,7 +47,7 @@ const resolver = {
             const errors = validateProfileInput(profileInput);
 
             if (errors) {
-                throw new UserInputError('Not valid inputs', {errors});
+                throw new GraphQLError('Not valid inputs', {errors});
             }
 
             for (let key in profileInput) {

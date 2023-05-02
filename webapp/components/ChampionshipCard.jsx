@@ -1,7 +1,7 @@
 import {TextWithTitle} from "./TextWithTitle";
 import {ButtonGroup, Col, Container} from "react-bootstrap";
 import {T} from "./T";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import championshipIcon from '../public/images/championship_icon.png';
 import {ButtonLink} from "./ButtonLink";
 

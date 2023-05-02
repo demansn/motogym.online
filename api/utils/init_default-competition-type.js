@@ -1,4 +1,4 @@
-const {TypesCompetitions} = require('../models');
+const {services} = require("../ServiceRegistry");
 
 const regulation = {
     ru: `Это соревнования на время, по трассе, размеченной конусами! Пилот начинает со стартовой площадки, проезжает всю трассу и заканчивает на финишной площадке.  Время заезда определяется с помощью устройства lap timer. 
@@ -38,23 +38,27 @@ const regulationChampionship = {
 }
 
 const crateDefaultModels = async () => {
-    await TypesCompetitions.findOne({name: 'Time Attack - online'}).then(type => {
-        if (!type) {
-            new TypesCompetitions({
-                name: 'Time Attack - online',
-                regulation
-            }).save();
-        }
-    });
+    const db = await services.get('db').getDB();
 
-    await TypesCompetitions.findOne({name: 'Championship - online'}).then(type => {
-        if (!type) {
-            new TypesCompetitions({
-                name: 'Championship - online',
-                regulation: regulationChampionship
-            }).save();
+    if (db) {
+        console.log('db is connected');
+
+        const typescompetitions = await db.collection('typescompetitions');
+
+        if (typescompetitions.count() === 0) {
+            console.log('typescompetitions is empty');
+
+            await typescompetitions.insertMany([
+                {
+                    name: 'Time Attack - online',
+                    regulation
+                }, {
+                    name: 'Championship - online',
+                    regulation: regulationChampionship
+                }
+            ]);
         }
-    });
+    }
 }
 
 module.exports = {crateDefaultModels}

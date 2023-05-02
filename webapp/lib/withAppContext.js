@@ -2,16 +2,16 @@ import createApolloClient from "./createApolloClient";
 import {serverSideTranslations} from "next-i18next/serverSideTranslations";
 
 function getRedirectIfNotAccessLevel(context, accessLevel) {
-    const {authToken = ''} = context.req.cookies;
+    const {accessToken = ''} = context.req.cookies;
 
     const redirect = {
         destination: '/',
         permanent: false,
     };
 
-    if (accessLevel === 'user' && !authToken) {
+    if (accessLevel === 'user' && !accessToken) {
         return redirect;
-    } else if (accessLevel === 'guest' && authToken) {
+    } else if (accessLevel === 'guest' && accessToken) {
         return redirect;
     } else {
         return null;
@@ -23,12 +23,12 @@ async function defaultCallback() {
 }
 
 async function createAppContext(context) {
-    const {authToken = ''} = context.req.cookies;
-    const apolloClient = createApolloClient(authToken, true, context.locale);
+    const {accessToken = ''} = context.req.cookies;
+    const apolloClient = createApolloClient(accessToken, false, context.locale);
     const translations = await serverSideTranslations(context.locale);
     const appProps = {
         ...translations,
-        authToken,
+        accessToken,
         host: context.req.headers.host
     };
 
@@ -42,20 +42,26 @@ export function withAppContext(options = {}) {
     } = options;
 
     return async (context) => {
-        const redirect = getRedirectIfNotAccessLevel(context, accessLevel);
+        try {
+            const redirect = getRedirectIfNotAccessLevel(context, accessLevel);
 
-        if (redirect) {
-            return {redirect};
+            if (redirect) {
+                return {redirect};
+            }
+
+            const appContext = await createAppContext(context);
+            const callbackResult = await callback({...context, ...appContext});
+
+            if (callbackResult.props) {
+                callbackResult.props = {...appContext.appProps, ...callbackResult.props};
+            }
+
+            return callbackResult;
+        } catch (e) {
+            console.error(e);
+
+            return {redirect: {destination: '/500'}};
         }
-
-        const appContext = await createAppContext(context);
-        const callbackResult = await callback({...context, ...appContext});
-
-        if (callbackResult.props) {
-            callbackResult.props = {...appContext.appProps, ...callbackResult.props};
-        }
-
-        return callbackResult;
     };
 }
 

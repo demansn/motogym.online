@@ -1,6 +1,8 @@
-const { UserInputError } = require('apollo-server-express');
 const CompetitionResultTime = require('../utils/CompetitionResultTime');
-const { ObjectID, Types } = require('mongodb');
+const {GraphQLError} = require("graphql/error");
+const {ObjectID, ObjectId} = require("mongodb");
+const {validateCompetitionInput} = require("../validators");
+const {ACCESS_LEVEL} = require("../config/AccessLevel");
 
 const findResultBestTime = (results) => {
     return Math.min(...results.map(({time, fine}) => time + fine));
@@ -22,10 +24,6 @@ const parseResults = (competition) => {
     return competition.results.filter(({user}) => user).map(result => {
         return {
             ...result,
-            user: {
-                ...result.user,
-                id: result.user._id
-            },
             id: result._id,
             competition
         }
@@ -38,7 +36,8 @@ const parseCompetition = comp => {
         id: comp._id,
     };
 
-    competition.bestTime = findResultBestTime(comp.results);
+    competition.results = comp.results || [];
+    competition.bestTime = findResultBestTime(competition.results);
     competition.results = parseResults(competition);
 
     return competition;
@@ -47,6 +46,9 @@ const parseCompetition = comp => {
 const resolver = {
     Trivial: {
         Competition: {
+            type: async (parent, args, {typesCompetitions}) => {
+                return await typesCompetitions.findOne({_id: parent.type});
+            },
             results: async (parent, args, {currentUser}) => {
                 const {filter = {}} = args;
                 let results = parent.results.sort(sortResultByTime);
@@ -123,8 +125,12 @@ const resolver = {
             gapMilliseconds: (parent, args, context) => {
                 return parent.gap;
             },
+            user: async (parent, args, {users}) => {
+                return await users.findUserByID(parent.user);
+            }
         },
         TypeCompetition: {
+            id: parent => parent._id,
             regulation: (parent, args, context) => {
                 const {language} = context;
 
@@ -142,37 +148,30 @@ const resolver = {
     },
     Query: {
         competition: async (parent, args, context) => {
-            const {dataSources} = context;
-            const {Competition} = dataSources.models;
-            const competition = await Competition
-                                        .findOne({_id: args.id})
-                                        .populate('results.user')
-                                        .populate('type');
+            const {competitions} = context;
+            const competition = await competitions
+                                        .findByID(args.id);
 
-            return parseCompetition(competition);
+            return competition ? parseCompetition(competition) : null;
+        },
+        competitionByName: async (parent, {name}, context) => {
+            const {competitions} = context;
+            const competition = await competitions
+                .findOne({name});
+
+            return competition ? parseCompetition(competition) : null;
         },
         competitions: async (parent, {type}, context) => {
-            const {dataSources} = context;
-            const {Competition} = dataSources.models;
-            const competitions = await Competition.find({})
-                                    .populate('results.user')
-                                    .populate('type');
+            const {competitions: competitionsCollection} = context;
+            const competitions = await competitionsCollection.find({});
 
             return competitions.map(parseCompetition);
         },
-        competitionTypes: async (parent, args, context) => {
-            const {dataSources} = context;
-            const {TypesCompetitions} = dataSources;
-            const types = await TypesCompetitions.find();
-
-            return types;
+        competitionTypes: async (parent, args, {typesCompetitions}) => {
+           return await typesCompetitions.find({});
         },
-        typeCompetition: async (parent, args, context) => {
-            const {dataSources} = context;
-            const {TypesCompetitions} = dataSources;
-            const type = await TypesCompetitions.findOne({name: args.name});
-
-            return type;
+        typeCompetition: async (parent, {name}, {typesCompetitions}) => {
+            return await typesCompetitions.findOne({name});
         },
         // resultsOfCompetitions: async (parent, {find}, context) => {
         //     const {dataSources} = context;
@@ -190,30 +189,50 @@ const resolver = {
         // }
     },
     Mutation: {
+        removeCompetition: async (parent, args, context) => {
+            const {currentUser, hasRole, competitions, fileStorage} = context;
+            const {id} = args;
+
+            if (hasRole(ACCESS_LEVEL.MANAGER)) {
+                const competition = await competitions.findByID(id);
+
+                if (competition) {
+                    if (competition.author.toString() !== currentUser.id.toString()) {
+                        throw new GraphQLError('You do not have permission to delete this competition');
+                    }
+                    await fileStorage.removeFile(competition.racetrack);
+                    await competitions.removeByID(id);
+
+                    return true;
+                } else {
+                    throw new GraphQLError(`Competition '${id}' not found`);
+                }
+            } else {
+                throw new GraphQLError('You do not have permission to delete competitions');
+            }
+        },
         createCompetition: async (parent, args, context) => {
-            const {dataSources, currentUser, hasRole, ACCESS_LEVEL} = context;
-            const {Competition} = dataSources.models;
+            const {currentUser, hasRole, competitions, fileStorage} = context;
             const {competitionInput} = args;
 
             if (hasRole(ACCESS_LEVEL.MANAGER)) {
-                const errors = dataSources.validators.validateCompetitionInput(competitionInput);
+                const errors = validateCompetitionInput(competitionInput);
 
                 if (errors) {
-                    throw new UserInputError('Not valid inputs', {errors});
+                    throw new GraphQLError('Not valid inputs', {errors});
                 }
 
-                //find by name
-                const oldCompetition = await Competition.findOne({name: competitionInput.name});
+                const oldCompetition = await competitions.findOne({name: competitionInput.name});
 
                 if (oldCompetition) {
-                    throw new UserInputError('Not valid inputs', {
+                    throw new GraphQLError('Not valid inputs', {
                         errors: {
                             competition: `Competition '${competitionInput.name}' already exists`
                         }
                     });
                 }
 
-                const racetrack = await dataSources.fileStorage.addFile(competitionInput.racetrack, 'racetracks');
+                const racetrack = await fileStorage.addFile(competitionInput.racetrack, 'racetracks');
                 const competitionFields = {
                     name: competitionInput.name,
                     description: competitionInput.description,
@@ -222,29 +241,24 @@ const resolver = {
                     type: competitionInput.type,
                     racetrack,
                     author: currentUser.id,
-                    created: Date.now()
+                    created: Date.now(),
+                    results: []
                 };
 
-                const competition = new Competition(competitionFields);
-
-                await competition.save();
-
-                return competition;
+                return await competitions.insertOne(competitionFields);
             } else {
                 return null;
             }
         },
         addResult: async (parent, args, context) => {
             try {
-                const {dataSources, currentUser, hasRole, ACCESS_LEVEL} = context;
-                const {Competition, CompetitionResultStatus} = dataSources;
+                const {competitions, users, currentUser, hasRole, ACCESS_LEVEL} = context;
                 const {resultInput} = args;
 
-                console.log(currentUser);
-
                 if (hasRole(ACCESS_LEVEL.DRIVER)) {
-                    const competition = await Competition.findOne({_id: resultInput.competitionID});
-                    const motorcycle = currentUser.motorcycles.find(({_id}) => resultInput.motorcycleID.toString().indexOf(_id) > -1);
+                    const competition = await competitions.findOne({_id: resultInput.competitionID});
+                    const user = await users.findOne({_id: currentUser.id});
+                    const motorcycle = user.motorcycles.find(({_id}) => resultInput.motorcycleID.toString().indexOf(_id) > -1);
 
                     if (!competition || !motorcycle) {
                         console.log('not found competition or motorcycle', competition, motorcycle);
@@ -252,8 +266,8 @@ const resolver = {
                     }
 
                     const resultFields = {
-                        user: currentUser,
-                        motorcycle,
+                        user: new ObjectId(currentUser.id),
+                        motorcycle: new ObjectId(motorcycle._id),
                         time: resultInput.time,
                         video: resultInput.video,
                         date: resultInput.date || Date.now(),
@@ -263,7 +277,8 @@ const resolver = {
                     const result = competition.results.create(resultFields);
 
                     competition.results.push(result);
-                    competition.save();
+
+                    await competitions.updateOne({_id: competition._id}, competition);
 
                     return result;
                 } else {

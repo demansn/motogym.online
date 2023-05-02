@@ -11,10 +11,8 @@ export const FailureEmailVerification = () => {
                 <T>This link is incorrect or out of date, go to the authorization page and log in</T>
             </p>
             <p>
-                <Link href={'/authorization'} passHref >
-                    <a>
-                        <T>Go to authorization page</T>
-                    </a>
+                <Link href={'/authorization'} >
+                    <T>Go to authorization page</T>
                 </Link>
             </p>
         </>

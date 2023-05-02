@@ -7,7 +7,7 @@ export function NavLink({href, onClick, children, className = ''}){
     const isActive = asPath === href;
 
     return (
-        <Link href={href} passHref >
+        <Link href={href} legacyBehavior={true} passHref>
             <Nav.Link active={isActive} onClick={onClick} className={className}>
                 {children}
             </Nav.Link>

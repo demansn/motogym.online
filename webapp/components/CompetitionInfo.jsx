@@ -1,7 +1,7 @@
 import {LineTitle} from "./LineTitle";
 import {T} from "./T";
 import {TextWithTitle} from "./TextWithTitle";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import {Col, Row} from "react-bootstrap";
 import {useTranslation} from "next-i18next";
 

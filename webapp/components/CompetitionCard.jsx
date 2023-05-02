@@ -1,7 +1,7 @@
 import {TextWithTitle} from "./TextWithTitle";
 import {Button, ButtonGroup, Col, Container} from "react-bootstrap";
 import {T} from "./T";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 
 export function CompetitionCard(props) {
@@ -34,7 +34,7 @@ export function CompetitionCard(props) {
 
 function LinkButton({href, hidden, children}) {
     return (
-        <Link href={href} passHref >
+        <Link href={href} legacyBehavior={true}>
             <Button size='sm' variant="secondary" hidden={hidden}>
                 {children}
             </Button>

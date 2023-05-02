@@ -11,10 +11,8 @@ export const SuccessEmailVerification = () => {
                 <T>Your email has been successfully verified! It remains to fill out the profile</T>
             </p>
             <p>
-                <Link href={'/edit-user-profile'} passHref>
-                    <a>
-                        <T>Go to profile</T>
-                    </a>
+                <Link href={'/edit-user-profile'} >
+                    <T>Go to profile</T>
                 </Link>
             </p>
         </>

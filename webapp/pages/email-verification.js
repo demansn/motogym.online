@@ -1,8 +1,7 @@
 import {CenteredContainer, T, SuccessEmailVerification, FailureEmailVerification} from "@components";
 import {Container} from "react-bootstrap";
 import withAppContext from "lib/withAppContext";
-import {gql} from "@apollo/client";
-import {setCookies} from "cookies-next";
+import {authRequest} from "lib/utils";
 
 export default function EmailVerificationPage({success}) {
     return (
@@ -23,33 +22,16 @@ EmailVerificationPage.layout = ({ children }) => {
 
 export const getServerSideProps = withAppContext({
     accessLevel: 'guest',
-    callback: async ({query, apolloClient, req, res}) => {
+    callback: async ({query}) => {
         const {t: token = ''} = query;
 
         if (!token) {
             return {redirect: {destination: '/', permanent: false}};
         }
 
-        const {data} = await apolloClient.mutate({mutation, variables: {token}});
-        const success = Boolean(data && data.userVerification.token);
-        const authToken = success ? data.userVerification.token : '';
+        const {status} = await authRequest('user-verification', {token});
+        const success = status === 'ok';
 
-        if (success) {
-            setCookies('authToken', authToken, {req, res});
-        }
-
-        return {props: {success, authToken}};
+        return {props: {success}};
     }
 });
-
-const mutation = gql`
-    mutation verification($token: String!) {
-        userVerification(token: $token) {
-            token
-            user {
-                id
-                isVerified
-            }
-        }
-    }
-`;

@@ -1,11 +1,10 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "index_old.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js -e js,mjs,json,graphql,.env",
+    "start": "node index_old.js",
+    "dev": "node --watch index_old.js",
     "create-env": "printenv > .env",
     "deploy": "gcloud app deploy --project motogym-online-api",
     "deploy-to-dev": "gcloud app deploy --project motogym-online-dev-api"
@@ -14,23 +13,20 @@
     "type": "git",
     "url": "git+https://github.com/demansn/motogym.online.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/demansn/motogym.online/issues"
   },
   "homepage": "https://github.com/demansn/motogym.online#readme",
   "dependencies": {
+    "@apollo/server": "^4.6.0",
     "@google-cloud/storage": "^6.0.1",
-    "apollo-server": "^3.8.1",
-    "apollo-server-express": "^3.8.1",
     "aws-sdk": "^2.1148.0",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "fs-capacitor": "^7.0.1",
-    "graphql": "^16.5.0",
+    "graphql": "^16.6.0",
     "graphql-upload": "^15.0.1",
     "i18next": "^21.8.7",
     "i18next-node-fs-backend": "^2.1.3",

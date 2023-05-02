@@ -1,6 +1,5 @@
-const { gql } = require('apollo-server-express');
 const { readFileSync } = require('fs');
 
-const typeDefs = readFileSync('./schema/types.graphql', 'UTF-8');
+const typeDefs = readFileSync(require.resolve('./types.graphql')).toString('utf-8')
 
-module.exports = gql(typeDefs);
+module.exports =  typeDefs;

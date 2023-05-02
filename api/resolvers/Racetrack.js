@@ -1,5 +1,3 @@
-const { UserInputError } = require('apollo-server-express');
-const path = require('path');
 
 const resolver = {
     Trivial: {
@@ -32,7 +30,7 @@ const resolver = {
                 const errors = validators.validateRacetrackInput(racetrackInput);
 
                 if (errors) {
-                    throw new UserInputError('Not valid inputs', {errors});
+                    throw new GraphQLError('Not valid inputs', {errors});
                 }
 
                 //find by name

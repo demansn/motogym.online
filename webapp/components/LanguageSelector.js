@@ -6,7 +6,7 @@ import {useLanguage} from "../hooks/useLanguage";
 
 const languages = {
     "ua": 'ukrainian',
-    "ru": 'russian',
+    // "ru": 'russian',
     "en": 'english',
     // "ja": 'japanese',
 };

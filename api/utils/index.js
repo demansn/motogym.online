@@ -1,10 +1,19 @@
 const crypto = require('crypto');
 const createRandomToken = function () {
-
-
     return crypto.randomBytes(16).toString('hex');
 };
 const moment = require('moment');
+const bcrypt = require("bcryptjs");
+
+async function hashPassword(password) {
+    const salt = await bcrypt.genSalt(10);
+
+    return await bcrypt.hash(password, salt);
+}
+
+async function comparePasswords(passwordA, passwordB) {
+    return await bcrypt.compare(passwordA, passwordB);
+}
 
 function decimalAdjust(type, value, exp) {
     // Если степень не определена, либо равна нулю...
@@ -83,5 +92,7 @@ module.exports = {
     stringTimeToMilliseconds,
     sortByTime,
     getGapTime,
-    createRandomToken
+    createRandomToken,
+    hashPassword,
+    comparePasswords
 };

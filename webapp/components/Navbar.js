@@ -9,8 +9,7 @@ import {LanguageSelector} from "./LanguageSelector";
 import {useAuth} from "../lib/auth";
 
 export function Navbar() {
-    const { t } = useTranslation();
-    const {isSignedIn, signOut} = useAuth();
+    const {isSignedIn} = useAuth();
 
     const [expanded, setExpanded] = useState(false);
 
@@ -21,9 +20,7 @@ export function Navbar() {
     return (
         <BootstrapNavbar expanded={expanded} onToggle={toggle} expand="sm" bg="dark" variant="dark" sticky="top" >
             <Container>
-                <Link href={'/'} passHref >
-                    <BootstrapNavbar.Brand onClick={toggle}>Motogym</BootstrapNavbar.Brand>
-                </Link>
+                <BootstrapNavbar.Brand to={Link} href={'/'} onClick={toggle}>Motogym</BootstrapNavbar.Brand>
                 <BootstrapNavbar.Toggle aria-controls="responsive-navbar-nav" />
                 <BootstrapNavbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
@@ -38,7 +35,7 @@ export function Navbar() {
                         </NavLink>
                     </Nav>
                     <Nav  >
-                        {isSignedIn() ? <AutorizedUserNavs onClick={toggle} /> : <GuestUserNavs onClick={toggle} />}
+                        {isSignedIn() ? <AuthorizedUserNavs onClick={toggle} /> : <GuestUserNavs onClick={toggle} />}
                         <LanguageSelector />
                     </Nav>
                 </BootstrapNavbar.Collapse>
@@ -47,7 +44,7 @@ export function Navbar() {
     );
 }
 
-function AutorizedUserNavs({onClick}) {
+function AuthorizedUserNavs({onClick}) {
     const { t } = useTranslation();
     const {signOut} = useAuth();
 
@@ -59,11 +56,9 @@ function AutorizedUserNavs({onClick}) {
 
     return (
         <NavDropdown title={t('User')} align="end" id={'NavDropdown'}>
-            <Link href={'/edit-user-profile'} passHref >
-            <NavDropdown.Item onClick={onClick}>
+            <NavDropdown.Item onClick={onClick} to={Link} href={'/edit-user-profile'} >
                     <T>Edit profile</T>
             </NavDropdown.Item>
-            </Link>
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={() => logout()} >
                 <T>Logout</T>

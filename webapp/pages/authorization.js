@@ -6,11 +6,12 @@ import {useAuth} from "lib/auth";
 import Router from "next/router";
 import withAppContext from "lib/withAppContext";
 import {Fragment} from "react";
-import Head from "next/head";
-import {LocalizedTitle, Title} from "../components/LocalizedTitle";
 import {SiteHead} from "../components/SiteHead";
+import {host} from "../config";
+import {useLanguage} from "../hooks/useLanguage";
 
 export default function AuthorizationPage() {
+    const [locale] = useLanguage();
     const {signIn, signUp} = useAuth();
     const { t } = useTranslation();
     const  {password, setPassword, email, setEmail, setFormError, validateInputs, errors} = useAuthorizationForm();
@@ -23,7 +24,7 @@ export default function AuthorizationPage() {
                 if (!success) {
                     setFormError(error);
                 } else {
-                    Router.push(`/driver/${user.id}`);
+                    Router.push(`/`);
                 }
             });
         }
@@ -32,7 +33,7 @@ export default function AuthorizationPage() {
         e.preventDefault();
 
         if (validateInputs()) {
-            signUp(email, password).then(({error, success}) => {
+            signUp({email, password, verificationLink: `${host}/${locale}/email-verification` }).then(({error, success}) => {
                 if (!success) {
                     setFormError(error);
                 } else {

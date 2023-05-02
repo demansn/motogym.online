@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { appWithTranslation } from 'next-i18next';
 import {SSRProvider} from "react-bootstrap";
 import Layout from "components/Layout";
-import { AuthProvider } from 'lib/auth.js';
+import {AuthProvider} from 'lib/auth.js';
 import nextI18NextConfig from '../next-i18next.config.js';
 import {ModalQuestionProvider} from "components/ModalQuestion";
 
@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     return (
         <SSRProvider>
             <ModalQuestionProvider >
-                <AuthProvider authToken={pageProps.authToken}>
+                <AuthProvider accessToken={pageProps.accessToken}>
                     <ComponentLayout >
                         <Component {...pageProps} />
                     </ComponentLayout>

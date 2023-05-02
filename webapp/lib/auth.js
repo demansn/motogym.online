@@ -1,53 +1,22 @@
-import React, {useState, useContext, createContext} from 'react';
+import React, {useState, useContext, createContext, useEffect} from 'react';
 import {ApolloProvider, gql,} from '@apollo/client';
 import createApolloClient from "./createApolloClient";
 import {useTranslation} from "next-i18next";
-import {setAuthTokenRequest} from "./setAuthTokenRequest";
-
-const REGISTRATION = gql`
-    mutation registration($registrationInput: RegistrationInput!) {
-        registration(registrationInput: $registrationInput)
-    }
-`;
-
-const LOGIN = gql`
-    mutation login($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
-            token
-            user {
-                id
-                email
-                accessLevel
-                isVerified
-            }
-        }
-    }
-`;
-
-const SET_NEW_PASSWORD = gql`
-    mutation newPassword($token: String! $password: String!) {
-        resetPassword(token: $token, password: $password) {
-            token
-            user {
-                id
-                email
-                accessLevel
-                isVerified
-            }
-        }
-    }
-`;
+import {host} from "../config";
+import {getJwtTokenPayload, isJwtTokenExpired} from "common/jwtUtils";
+import Router from "next/router";
+import {authRequest} from "./utils";
 
 const authContext = createContext();
 
-export function AuthProvider({ children, authToken }) {
-    const auth = useProvideAuth(authToken);
+export function AuthProvider({ children, accessToken}) {
+    const auth = useProvideAuth(accessToken);
     const {i18n} = useTranslation();
-    const ssrMode = typeof window === 'undefined';
+    const ssrMode = true;
 
     return (
         <authContext.Provider value={auth}>
-            <ApolloProvider client={createApolloClient(authToken, ssrMode, i18n.language)}>
+            <ApolloProvider client={createApolloClient(accessToken, ssrMode, i18n.language)}>
                 {children}
             </ApolloProvider>
         </authContext.Provider>
@@ -58,77 +27,68 @@ export const useAuth = () => {
     return useContext(authContext);
 };
 
-function useProvideAuth(defaultAuthToken) {
-    const [authToken, setAuthToken] = useState(defaultAuthToken);
+function useProvideAuth(defaultAccessToken) {
+    const [accessToken, setAccessToken] = useState(defaultAccessToken);
 
     const isSignedIn = () => {
-        if (authToken) {
+        if (accessToken) {
             return true;
         } else {
             return false;
         }
     };
 
-    const getAuthHeaders = () => {
-        if (!authToken) return null;
-
-        return {
-            authorization: `Bearer ${authToken}`
-        };
-    };
-
-    const setToken = async (authToken) => {
-        const result = await setAuthTokenRequest(authToken);
-
-        if (result) {
-            setAuthToken(authToken);
+    const getAuthorizedUser = () => {
+        if (accessToken) {
+            return null;
         }
 
-        return result;
+        const {emil, id, accessToken, isVerified} = getJwtTokenPayload(accessToken);
+
+        return {emil, id, accessToken, isVerified};
     };
 
     const signIn = async (email, password) => {
-        const client = createApolloClient();
-        const {data} = await client.mutate({
-            mutation: LOGIN,
-            variables: { email, password },
+        const response = await fetch(`${host}/api/login`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json;charset=utf-8'},
+            body: JSON.stringify({email, password}),
         });
-        let error = null;
+        const data = await response.json();
+        let errorMessage = null;
         let success = false;
-        let user = null;
+        let accessToken = data.accessToken;
 
-        if (data) {
-            if (data.login.user && !data.login.user.isVerified) {
-                error = 'Email address is not verified! A new link has been sent to your mail to confirm the mail! Check your mail';
-            } else if (data.login.user && data.login.token)  {
+        if (data.error) {
+            if (data.error.status === 'invalidEmailOrPassword') {
+                errorMessage = 'Wrong email or password entered';
 
-                success = setToken(data.login.token);
-                user = data.login.user;
+            } else if (data.error.status === 'emailNotVerified')  {
+                errorMessage = 'Email address is not verified! A new link has been sent to your mail to confirm the mail! Check your mail';
             } else {
-                error = 'Wrong email or password entered';
+                errorMessage = 'Wrong email or password entered';
             }
+        } else {
+            setAccessToken(accessToken);
+            success = true;
         }
 
-        return {error, success, user};
+        return {error: errorMessage, success, accessToken};
     };
 
-    const signUp = async (email, password) => {
-        const client = createApolloClient();
-        const result = await client.mutate({
-            mutation: REGISTRATION,
-            variables: {registrationInput: {email, password}},
-        });
+    const signUp = async ({email, password, verificationLink}) => {
+        const data = await authRequest('signup', {email, password, verificationLink});
         let error = null;
         let success = false;
 
-        if (result && result.data) {
-            const {registration} = result.data;
-
-            if (registration === false) {
+        if (data.error) {
+            if (data.status === 'emailAlreadyExists') {
                 error = 'A user with such emails is already there, or the fields is entered incorrectly';
-            } else if (registration === true) {
-                success = true;
+            } else {
+                error = data.error;
             }
+        } else if (data.status === 'ok'){
+            success = true;
         } else {
             error = 'Server error';
         }
@@ -137,44 +97,33 @@ function useProvideAuth(defaultAuthToken) {
     };
 
     const signOut = async () => {
-        await fetch('/api/removeAuthToken');
+        await fetch(`${host}/api/logout`, {method: 'POST'});
 
-        setAuthToken(null);
+        setAccessToken(null);
     };
 
-    const resetPassword = async (resetToken, password) => {
-        let status = 'error';
-        const client = createApolloClient();
-        const {data} = await client.mutate({
-            mutation: SET_NEW_PASSWORD,
-            variables: {token: resetToken, password}
-        });
+    const forgotPassword = async ({email, resetPasswordLink}) => {
+        const data = await authRequest('forgot-password', {email, resetPasswordLink});
+        const status = data.status === 'ok' ? 'success' : 'error';
 
-        if (data.resetPassword) {
-            const {token, user} = data.resetPassword;
+        return {status};
+    };
 
-            if (user && token) {
-                const success = await setToken(data.resetPassword.token);
-
-                if (success) {
-                    status = 'success';
-                }
-            } else if (user && !user.isVerified) {
-                status = 'notVerified';
-            }
-
-            return {status, user};
-        }
+    const resetPassword = async (token, password) => {
+        const data = await authRequest('set-new-password', {token, password});
+        const status = data.status === 'ok' ? 'success' : 'error';
 
         return {status};
     };
 
     return {
-        setAuthToken,
+        setAuthToken: setAccessToken,
         isSignedIn,
         signIn,
         signOut,
         signUp,
-        resetPassword
+        forgotPassword,
+        resetPassword,
+        getAuthorizedUser
     };
 }

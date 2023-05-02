@@ -1,5 +1,5 @@
 import {Col, Container, Row} from "react-bootstrap";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import avatarIcon from "public/images/avatar-icon.png";
 import {T, LineTitle, TextWithTitle} from "@components";
 import get from 'lodash/get';

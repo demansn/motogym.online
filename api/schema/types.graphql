@@ -1,6 +1,7 @@
 scalar CompetitionResultTime
 scalar Date
 scalar Upload
+scalar CompetitionName
 
 enum Gender {
     male
@@ -21,16 +22,21 @@ type LocalizedDescription {
     ja: String
 }
 
-type TypeCompetition {
+interface Node {
+    id: ID!
+}
+
+type TypeCompetition implements Node {
     id: ID!
     name: String
     regulation: String
 }
 
-type Competition {
+type Competition implements Node {
     id: ID!
-    name: String!
+    name: CompetitionName!
     type: TypeCompetition!
+    title: LocalizedDescription!
     description: LocalizedDescription!
     racetrack: String!
     author: ID
@@ -143,7 +149,7 @@ type UserProfile {
     age: Int
 }
 
-type User {
+type User implements Node {
     id: ID!
     email: String!
     accessLevel: Int
@@ -151,16 +157,6 @@ type User {
     profile: UserProfile!
     motorcycles: [Motorcycle!]!
     competitionResults: [CompetitionResult!]!
-}
-
-type AuthPayload {
-    token: String
-    user: User
-}
-
-input RegistrationInput {
-    email: String!
-    password: String!
 }
 
 input ProfileInput {
@@ -281,6 +277,7 @@ type Query {
     competitionTypes: [TypeCompetition!]!
     typeCompetition(name: String!): TypeCompetition
     competition(id: ID!): Competition
+    competitionByName(name: CompetitionName!): Competition
     championships(filter: ChampionshipFilter): [Championship]
     championship(id: ID!): Championship
     championshipByName(name: String!): Championship
@@ -288,15 +285,11 @@ type Query {
 }
 
 type Mutation {
-    login(email: String!, password: String!): AuthPayload!
-    userVerification(token: String!): AuthPayload!
-    passwordRecoveryRequest(email: String!): Boolean
-    resetPassword(token: String! password: String!): AuthPayload!
-    registration(registrationInput: RegistrationInput!): Boolean!
     profile(profileInput: ProfileInput!): User
     userAvatar(file: Upload!): User
 
     createCompetition(competitionInput: CreateCompetitionInput!): Competition!
+    removeCompetition(id: ID!): Boolean
     editCompetition(competitionInput: EditCompetitionInput!): Competition!
     competitionResult(fields: EditResultInput!): CompetitionResult
     addResult(resultInput: ResultInput!): CompetitionResult

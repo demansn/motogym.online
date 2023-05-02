@@ -1,19 +1,18 @@
 import {NextResponse} from "next/server";
-import { jwtVerify } from 'jose';
+import {isJwtTokenExpired} from "common/jwtUtils";
 
 export async function middleware(req) {
-    const secretOrKey = process.env.SECRET_OR_KEY;
-    const res = NextResponse.next();
 
-    if (req.cookies.authToken) {
-        const token = req.cookies.authToken.replace('Bearer ', '');
+    const data = req.cookies.get('accessToken');
 
-        try {
-            await jwtVerify(token, new TextEncoder().encode(secretOrKey));
-        } catch(e) {
-            res.clearCookie('authToken');
+    if (data && data.value) {
+        if (isJwtTokenExpired(data.value)) {
+            const res =  NextResponse.redirect(new URL('/session-expired', req.url));
+
+            res.cookies.delete('accessToken');
+
+
+            return res;
         }
     }
-
-    return res;
 }

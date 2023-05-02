@@ -1,17 +1,13 @@
 import {CenteredContainer, T} from "@components";
 import {Button, Container, Form} from "react-bootstrap";
 import {useTranslation} from "next-i18next";
-import {useMutation} from "@apollo/client";
 import {useState} from "react";
-import gql from "graphql-tag";
 import validator from "validator";
 import withAppContext from "lib/withAppContext";
-
-const PasswordRecoveryRequest = gql`
-    mutation passwordRecoveryRequest($email: String!) {
-        passwordRecoveryRequest(email: $email)
-    }
-`;
+import {authRequest} from "../lib/utils";
+import {host} from "../config";
+import {useLanguage} from "../hooks/useLanguage";
+import {useAuth} from "../lib/auth";
 
 const ValidateEmail = function(email) {
     return email && validator.isEmail(email);
@@ -19,22 +15,22 @@ const ValidateEmail = function(email) {
 
 export default function ForgotPasswordPage() {
     const { t } = useTranslation();
-    const [passwordRecoveryRequest] = useMutation(PasswordRecoveryRequest);
     const [email, setEmail] = useState('');
     const [invalidEmail, setInvalidEmail] = useState('');
     const [status, setStatus] = useState('');
+    const [locale] = useLanguage();
+    const {forgotPassword} = useAuth();
 
-    const onClickResetBtn = () => {
+    const onClickResetBtn = async () => {
         if (!ValidateEmail(email)) {
             setInvalidEmail('Please enter an email address');
             return;
         }
-
         setInvalidEmail('');
 
-        passwordRecoveryRequest({variables:{email}}).then(({data}) => {
-           setStatus(data.passwordRecoveryRequest ? 'success' : 'error');
-        });
+        const {status} = await forgotPassword({email, resetPasswordLink: `${host}/${locale}/reset-password`});
+
+        setStatus(status === 'ok' ? 'success' : 'error');
     };
 
     const alert = () => {

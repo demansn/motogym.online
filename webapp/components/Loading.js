@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {Container, Row, Col} from "react-bootstrap";
 import wheelImage from 'public/images/wheel-icon.png';
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export function Loading({loading, children}) {
     const SpinnerComponent = (

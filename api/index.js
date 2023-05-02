@@ -1,95 +1,21 @@
-require('dotenv').config();
-const isDev = process.env.NODE_ENV !== 'production';
-const { ApolloServer } = require('apollo-server-express');
-const mongoose = require('mongoose');
-const resolvers = require('./resolvers');
-const typeDefs = require('./schema');
-const {ACCESS_LEVEL} = require('./config/AccessLevel');
-const fileStorage = require('./file-storage');
-const {getPayload, getToken} = require('./JWTUtils');
-const {createRandomToken} = require('./utils');
-const models = require('./models');
-const validators = require('./validators');
-const emailTransporter = require('./email-transporter');
-const {i18next, initI18n} = require('./localization');
-const express = require('express');
-const {crateDefaultModels} = require('./utils/init_default-competition-type');
-const graphqlUploadExpress = require("graphql-upload/graphqlUploadExpress.js");
-const {MONGO_USER, MONGO_PASSWORD, MONGO_DB_NAME, MONGO_HOST} = process.env;
-const PATH_TO_CA_CERT = `${__dirname}/config/ca-certificate.cer`
-const MONGO_URI = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DB_NAME}?authSource=admin&replicaSet=motogym-db-backup&tls=true&tlsCAFile=${PATH_TO_CA_CERT}`;
-const MONGO_LOCAL_URI = 'mongodb://localhost/db';
-const secretOrKey = process.env.SECRET_OR_KEY;
-const port = process.env.PORT || 3003;
+import {Server} from "./src/Server.js";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
-const createContext = async ({_res, req, _connection}) => {
-    let currentUser;
-    const authorization = req.headers.authorization || '';
-    const language = req.headers['accept-language'] || 'en';
-    const origin = req.headers.origin;
-    const token = authorization.replace('Bearer ', '');
-    const hasRole = (accessLevel) => {
-        let visitorAccessLevel = currentUser ? currentUser.accessLevel : 0;
+const host = 'localhost';
+const port = 8000;
 
-        return visitorAccessLevel >= accessLevel;
-    };
+const server = new Server(host, port);
 
-    try {
-        const payload = await getPayload(token);
+// server.addRoute('/auth', (req, res) => {
+//     res.writeHead(200);
+//     res.end('eee');
+// });
 
-        currentUser = await (payload ? models.User.findById(payload.id) : null);
+server.start();
 
-        await initI18n({lng: language});
-    } catch (e) {
-        console.error(e);
-    }
+server.addRoute('/auth', auth);
 
-    return { currentUser, hasRole, getToken, createRandomToken, i18next, language, origin, ACCESS_LEVEL, emailTransporter };
-};
 
-async function start() {
-    // Connect to MongoDB
-    await mongoose.connect(isDev ? MONGO_LOCAL_URI : MONGO_URI, {
-        // useNewUrlParser: true,
-        // useUnifiedTopology: true,
-    });
 
-    console.log('MongoDB Connected');
 
-    await crateDefaultModels();
-
-    const server = new ApolloServer({
-        typeDefs,
-        resolvers,
-        introspection: true,
-        // playground: true,
-        dataSources: () => ({
-            validators,
-            models,
-            fileStorage,
-            secretOrKey,
-            emailTransporter,
-            ...models
-        }),
-        context: createContext
-    });
-
-    await server.start();
-
-    const app = express();
-
-    app.use(graphqlUploadExpress());
-
-    server.applyMiddleware({ app });
-
-    await new Promise(r => app.listen(port, r));
-
-    console.log(`GraphQL Server running at http://localhost:${port}${server.graphqlPath}`);
-}
-
-try {
-    start()
-        .then(() => console.log('Server initialized!'));
-} catch (e) {
-    console.error(e);
-}

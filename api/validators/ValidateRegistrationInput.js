@@ -1,25 +1,25 @@
 const Validator = require('validator');
 
 const validateRegistrationInput = function({email = '', password = ''}) {
-    const errors = {};
+    const data = {code: '', error: '', status: ''};
 
     if (Validator.isEmpty(email)) {
-        errors.email = 'Email field is required';
+        return {code: 1, error: 'Email field is required', status: 'notValidInput'};
     }
 
     if (!Validator.isEmail(email)) {
-        errors.email = 'Email is invalid';
+        return {code: 2, error: 'Email is invalid', status: 'notValidInput'};
     }
 
     if (Validator.isEmpty(password)) {
-        errors.password = 'Password field is required';
+        return {code: 3, error: 'Password field is required', status: 'notValidInput'};
     }
 
     if (!Validator.isLength(password, {min: 6, max: 30})) {
-        errors.password = 'Password must be at least 6 characters';
+        return {code: 4, error: 'Password must be at least 6 characters', status: 'notValidInput'};
     }
 
-    return Object.keys(errors).length > 0 ? errors : false;
+    return undefined;
 };
 
 module.exports.validateRegistrationInput = validateRegistrationInput;

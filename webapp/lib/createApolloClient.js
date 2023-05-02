@@ -1,14 +1,14 @@
 import { ApolloClient, InMemoryCache, ApolloLink, concat } from "@apollo/client";
 import {createUploadLink} from "apollo-upload-client";
-const host = 'https://motogym-online-api.appspot.com' || 'http://localhost:3003';
+const host = process.env.NEXT_PUBLIC_API_URL;
 const URI = `${host}/graphql`;
 
-function createApolloLink({authorization, locale}) {
+function createApolloLink({accessToken, locale}) {
     const authMiddleware = new ApolloLink((operation, forward) => {
         operation.setContext(({ headers = {} }) => ({
             headers: {
                 ...headers,
-                authorization: authorization,
+                authorization: accessToken ? `Bearer ${accessToken}` : '',
                 "Accept-Language": locale
             }
         }));
@@ -18,11 +18,10 @@ function createApolloLink({authorization, locale}) {
     return concat(authMiddleware, createUploadLink({uri: URI}));
 }
 
-function createApolloClient(authorization = '', ssrMode = false, locale = 'en') {
+function createApolloClient(accessToken = '', ssrMode = false, locale = 'en') {
     return new ApolloClient({
-        // uri: "https://motogym-api-wr7nu.ondigitalocean.app/graphql",
-        // uri: URI,
-        link: createApolloLink({authorization, locale}),
+        uri: URI,
+        link: createApolloLink({accessToken, locale}),
         cache: new InMemoryCache(),
         ssrMode: ssrMode,
     });

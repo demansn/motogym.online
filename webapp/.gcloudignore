@@ -3,6 +3,6 @@
 node_modules
 .next
 build
-.env-dev
+.env.development
 .eslintrc.json
 types.d.ts
