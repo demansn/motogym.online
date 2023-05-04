@@ -1,5 +1,5 @@
 import {GraphQLScalarType} from 'graphql';
-import {parseCompetitionName} from "common/parseCompetitionName.js";
+import {parseCompetitionName} from "../../utils/parseCompetitionName.js";
 
 export const CompetitionName = new GraphQLScalarType({
     name: 'CompetitionName',
