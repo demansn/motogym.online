@@ -1,7 +1,5 @@
 import Validator from 'validator';
 export const validateRegistrationInput = function({email = '', password = ''}) {
-    const data = {code: '', error: '', status: ''};
-
     if (Validator.isEmpty(email)) {
         return {code: 1, error: 'Email field is required', status: 'notValidInput'};
     }

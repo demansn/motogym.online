@@ -1,4 +1,4 @@
-import React, {useState, useContext, createContext, useEffect} from 'react';
+import React, {useState, useContext, createContext} from 'react';
 import {ApolloProvider, gql,} from '@apollo/client';
 import createApolloClient from "./createApolloClient";
 import {useTranslation} from "next-i18next";
@@ -32,11 +32,7 @@ function useProvideAuth(defaultAccessToken) {
     const [currentLanguage] = useLanguage();
 
     const isSignedIn = () => {
-        if (accessToken) {
-            return true;
-        } else {
-            return false;
-        }
+        return !!accessToken;
     };
 
     const getAuthorizedUser = () => {

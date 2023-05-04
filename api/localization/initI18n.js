@@ -1,5 +1,4 @@
 import i18next from 'i18next';
-import Backend from 'i18next-node-fs-backend';
 import {resources} from './resources.js';
 
 export const initI18n = (options = {}) => {

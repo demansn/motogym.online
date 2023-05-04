@@ -12,7 +12,6 @@ const s3 = new S3({
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
 });
 
-
 export async function addFile(file, folder, fileName) {
     const { createReadStream, filename} = await file;
     const {ext, name} = path.parse(filename);

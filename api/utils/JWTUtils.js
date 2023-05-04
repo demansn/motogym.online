@@ -1,6 +1,4 @@
-import bcrypt from 'bcryptjs';
 import {jwtVerify, SignJWT} from 'jose';
-const secretOrKey = process.env.SECRET_OR_KEY;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
