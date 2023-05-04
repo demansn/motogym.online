@@ -52,9 +52,6 @@ const crateDefaultModels = async () => {
                 {
                     name: 'Time Attack - online',
                     regulation
-                }, {
-                    name: 'Championship - online',
-                    regulation: regulationChampionship
                 }
             ]);
         }

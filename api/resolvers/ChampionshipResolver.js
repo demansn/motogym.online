@@ -1,7 +1,6 @@
-const ObjectID = require("mongodb").ObjectID;
-const CompetitionResultTime = require('../utils/CompetitionResultTime');
+import {CompetitionResultTime} from "../utils/CompetitionResultTime.js";
 
-const resolver = {
+export const ChampionshipResolver = {
     Trivial: {
         Championship: {
             rounds: async (parent, args, context) => {
@@ -289,5 +288,3 @@ const resolver = {
         }
     }
 }
-
-module.exports = resolver;

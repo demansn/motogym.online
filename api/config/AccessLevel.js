@@ -1,10 +1,6 @@
-const ACCESS_LEVEL = {
+export const ACCESS_LEVEL = {
     GUEST: 0,
     DRIVER: 1,
     MANAGER: 2,
     ADMIN: 999
-};
-
-module.exports = {
-    ACCESS_LEVEL
 };

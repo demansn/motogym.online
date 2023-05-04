@@ -1,4 +1,4 @@
-class ServiceRegistry {
+export class ServiceRegistry {
     constructor() {
         this.services = {};
     }
@@ -12,6 +12,4 @@ class ServiceRegistry {
     }
 }
 
-module.exports = {
-    services: new ServiceRegistry()
-}
+export const services = new ServiceRegistry()

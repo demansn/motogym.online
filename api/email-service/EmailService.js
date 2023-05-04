@@ -1,23 +1,23 @@
-const nodemailer = require('nodemailer');
-const {i18next} = require('../localization');
+import nodemailer from 'nodemailer';
+import i18next from 'i18next';
 
-const transportOptions = {
-    host: "mail.adm.tools",
-    port: 2525,
-    secure: false,
-    auth: {
-        user: process.env.TRANSPORT_AUTH_USER,
-        pass: process.env.TRANSPORT_AUTH_PASS,
-    }
-};
-
-class EmailService {
-    constructor(origin, language) {
-        this.origin = origin;
+export class EmailService {
+    constructor(user, pass) {
+        this.transportOptions = {
+            host: "mail.adm.tools",
+            port: 2525,
+            secure: false,
+            auth: {
+                user,
+                pass,
+            }
+        };
     }
 
     sendEmailConfirmation(email, verificationLink, token) {
-        const link = `${verificationLink}?t=${token}`
+        const link = `${verificationLink}?t=${token}`;
+        console.log(i18next);
+
         const message = `${i18next.t('You have just registered on motogym.online website. To confirm e-mail, click on the link')} ${link}`;
 
         this.sendEmail(email, 'Confirm your email address', message);
@@ -37,7 +37,7 @@ class EmailService {
     };
 
     sendEmail(to, subject, text) {
-        const transporter = nodemailer.createTransport(transportOptions);
+        const transporter = nodemailer.createTransport(this.transportOptions);
 
         return transporter.sendMail({
             from: 'no-reply@motogym.online',
@@ -47,5 +47,3 @@ class EmailService {
         });
     }
 }
-
-module.exports = {EmailService};

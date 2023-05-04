@@ -1,8 +1,7 @@
-const { GraphQLScalarType } = require('graphql');
-const CompetitionResultTimeUtils = require('../../utils/CompetitionResultTime');
+import {GraphQLScalarType} from 'graphql';
+import {CompetitionResultTime as CompetitionResultTimeUtils} from '../../utils/CompetitionResultTime.js';
 
-
-const CompetitionResultTime = new GraphQLScalarType({
+export const CompetitionResultTime = new GraphQLScalarType({
     name: 'CompetitionResultTime',
     description: 'CompetitionResultTime',
     serialize(value) {
@@ -18,7 +17,3 @@ const CompetitionResultTime = new GraphQLScalarType({
         }
     }
 });
-
-module.exports = {
-    CompetitionResultTime
-};

@@ -1,4 +1,4 @@
-const moment = require('moment');
+import moment from 'moment';
 
 function decimalAdjust(type, value, exp) {
     // Если степень не определена, либо равна нулю...
@@ -66,7 +66,7 @@ const sortByTime = function(resultA, resultB) {
 };
 
 
-class CompetitionResultTime {
+export class CompetitionResultTime {
     value;
     constructor(value) {
         this.value = toMomentTime(value);
@@ -111,5 +111,3 @@ class CompetitionResultTime {
         return decimalAdjust('round', value, exp);
     }
 }
-
-module.exports = CompetitionResultTime;

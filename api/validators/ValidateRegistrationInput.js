@@ -1,6 +1,5 @@
-const Validator = require('validator');
-
-const validateRegistrationInput = function({email = '', password = ''}) {
+import Validator from 'validator';
+export const validateRegistrationInput = function({email = '', password = ''}) {
     const data = {code: '', error: '', status: ''};
 
     if (Validator.isEmpty(email)) {
@@ -21,5 +20,3 @@ const validateRegistrationInput = function({email = '', password = ''}) {
 
     return undefined;
 };
-
-module.exports.validateRegistrationInput = validateRegistrationInput;

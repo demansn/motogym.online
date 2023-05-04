@@ -1,7 +1,7 @@
-const { GraphQLScalarType, UserInputError } = require('graphql');
-const {parseCompetitionName} = require('../../../common/parseCompetitionName');
+import {GraphQLScalarType} from 'graphql';
+import {parseCompetitionName} from "common/parseCompetitionName.js";
 
-const CompetitionName = new GraphQLScalarType({
+export const CompetitionName = new GraphQLScalarType({
     name: 'CompetitionName',
     description: 'CompetitionName',
     serialize(value) {
@@ -15,5 +15,3 @@ const CompetitionName = new GraphQLScalarType({
         }
     }
 });
-
-module.exports = {CompetitionName};

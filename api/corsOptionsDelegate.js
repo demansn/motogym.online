@@ -1,5 +1,5 @@
 const allowlist = ['http://localhost:3000', 'http://localhost:3001'];
-const corsOptionsDelegate = function (req, callback) {
+export const corsOptionsDelegate = function (req, callback) {
     let corsOptions;
 
     console.log(req.header('Origin'));
@@ -13,4 +13,3 @@ const corsOptionsDelegate = function (req, callback) {
     callback(null, corsOptions) // callback expects two parameters: error and options
 }
 
-module.exports = corsOptionsDelegate;

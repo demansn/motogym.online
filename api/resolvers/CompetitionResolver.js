@@ -1,8 +1,8 @@
-const CompetitionResultTime = require('../utils/CompetitionResultTime');
-const {GraphQLError} = require("graphql/error");
-const {ObjectID, ObjectId} = require("mongodb");
-const {validateCompetitionInput} = require("../validators");
-const {ACCESS_LEVEL} = require("../config/AccessLevel");
+import {GraphQLError} from "graphql";
+import {ObjectId} from "mongodb";
+
+import {ACCESS_LEVEL} from "../config/AccessLevel.js";
+import {CompetitionResultTime} from '../utils/CompetitionResultTime.js';
 
 const findResultBestTime = (results) => {
     return Math.min(...results.map(({time, fine}) => time + fine));
@@ -43,7 +43,7 @@ const parseCompetition = comp => {
     return competition;
 };
 
-const resolver = {
+export const CompetitionResolver = {
     Trivial: {
         Competition: {
             type: async (parent, args, {typesCompetitions}) => {
@@ -268,6 +268,7 @@ const resolver = {
                     const resultFields = {
                         user: new ObjectId(currentUser.id),
                         motorcycle: new ObjectId(motorcycle._id),
+                        competition: new ObjectId(resultInput.competitionID),
                         time: resultInput.time,
                         video: resultInput.video,
                         date: resultInput.date || Date.now(),
@@ -337,5 +338,3 @@ const resolver = {
         }
     }
 };
-
-module.exports = resolver;

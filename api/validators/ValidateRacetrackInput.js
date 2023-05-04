@@ -1,6 +1,5 @@
-const Validator = require('validator');
 
-const validateRacetrackInput = function(racetrackInput) {
+export const validateRacetrackInput = function(racetrackInput) {
     const errors = {};
     const validateStringObjectValues = (obj, errors) => {
         for (let key in obj) {
@@ -19,8 +18,4 @@ const validateRacetrackInput = function(racetrackInput) {
     } catch (e) {
         console.error(e);
     }
-};
-
-module.exports = {
-    validateRacetrackInput
 };

@@ -1,6 +1,4 @@
-const Validator = require('validator');
-
-const validateProfileInput = function(profileInput) {
+export const validateProfileInput = function(profileInput) {
     const errors = {};
 
     // for(let key in profileInput) {
@@ -10,10 +8,4 @@ const validateProfileInput = function(profileInput) {
     // }
 
     return Object.keys(errors).length > 0 ? errors : false;
-};
-
-
-
-module.exports = {
-    validateProfileInput
 };

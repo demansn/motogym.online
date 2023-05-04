@@ -1,5 +1,6 @@
-const {Storage} = require('@google-cloud/storage');
-const path = require('path');
+import {Storage} from '@google-cloud/storage';
+import path from 'path';
+
 const gc = new Storage({
     keyFilename: path.join(__dirname, '../config/storage.json'),
     projectId: 'motogym-online'
@@ -7,7 +8,7 @@ const gc = new Storage({
 
 const BASE_URL = 'https://storage.googleapis.com/motogym-online-files';
 
-async function addFile(file, folder, fileName) {
+export async function addFile(file, folder, fileName) {
     const { createReadStream, filename } = await file;
     const {ext, name} = path.parse(filename);
 
@@ -33,7 +34,7 @@ async function addFile(file, folder, fileName) {
     return `${folder}/${fileName}${ext}`;
 }
 
-async function removeFile(fileName) {
+export async function removeFile(fileName) {
     const file = googleStorage.file(fileName);
 
     try {
@@ -43,4 +44,4 @@ async function removeFile(fileName) {
     }
 }
 
-module.exports = gc.bucket(process.env.BUCKET_NAME);
+export const bucket = gc.bucket(process.env.BUCKET_NAME)

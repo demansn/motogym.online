@@ -1,4 +1,4 @@
-const validateLocalizedText = function(texts) {
+export const validateLocalizedText = function(texts) {
     const configs = {
         "ru": 'ru-RU',
         "ua": 'uk-UA',

@@ -1,6 +1,4 @@
-const Validator = require('validator');
-
-const validateCompetitionInput = function(competitionInput) {
+export const validateCompetitionInput = function(competitionInput) {
     const errors = {};
     const validateStringObjectValues = (obj, errors) => {
         for (let key in obj) {
@@ -19,8 +17,4 @@ const validateCompetitionInput = function(competitionInput) {
     } catch (e) {
         console.error(e);
     }
-};
-
-module.exports = {
-    validateCompetitionInput
 };

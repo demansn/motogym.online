@@ -1,7 +1,6 @@
-const {services} = require("../ServiceRegistry");
-const {ObjectId} = require("mongodb");
-
-class Collection {
+import {ObjectId} from "mongodb";
+import {services} from "../ServiceRegistry.js";
+export class Collection {
     constructor(name) {
         this.name = name;
         this.collection = null;
@@ -56,5 +55,3 @@ class Collection {
         return await this.collection.deleteOne({_id: ObjectId(id)});
     }
 }
-
-module.exports = {Collection};

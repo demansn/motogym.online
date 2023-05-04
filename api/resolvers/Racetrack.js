@@ -1,5 +1,5 @@
 
-const resolver = {
+export const resolver = {
     Trivial: {
         Racetrack: {
             map: async (parent, args, context) => {
@@ -60,5 +60,3 @@ const resolver = {
         }
     }
 };
-
-module.exports = resolver;

@@ -1,8 +1,8 @@
-const {services} = require("../ServiceRegistry");
-const {ObjectId} = require("mongodb");
-const {hashPassword} = require("../utils");
+import {ObjectId} from "mongodb";
+import {services} from "../ServiceRegistry.js";
+import {hashPassword} from "../utils/utils.js";
 
-class UsersService {
+export class UsersService {
     #collection;
 
     async setUsersCollection() {
@@ -65,5 +65,3 @@ class UsersService {
         return await this.#collection.find(filter).toArray();
     }
 }
-
-module.exports = {UsersService};

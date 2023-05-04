@@ -3,9 +3,9 @@ import {ApolloProvider, gql,} from '@apollo/client';
 import createApolloClient from "./createApolloClient";
 import {useTranslation} from "next-i18next";
 import {host} from "../config";
-import {getJwtTokenPayload, isJwtTokenExpired} from "common/jwtUtils";
-import Router from "next/router";
+import {getJwtTokenPayload} from "common/jwtUtils";
 import {authRequest} from "./utils";
+import {useLanguage} from "../hooks/useLanguage";
 
 const authContext = createContext();
 
@@ -29,6 +29,7 @@ export const useAuth = () => {
 
 function useProvideAuth(defaultAccessToken) {
     const [accessToken, setAccessToken] = useState(defaultAccessToken);
+    const [currentLanguage] = useLanguage();
 
     const isSignedIn = () => {
         if (accessToken) {
@@ -51,7 +52,7 @@ function useProvideAuth(defaultAccessToken) {
     const signIn = async (email, password) => {
         const response = await fetch(`${host}/api/login`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json;charset=utf-8'},
+            headers: {'Content-Type': 'application/json;charset=utf-8', 'accept-language': currentLanguage},
             body: JSON.stringify({email, password}),
         });
         const data = await response.json();
@@ -77,7 +78,7 @@ function useProvideAuth(defaultAccessToken) {
     };
 
     const signUp = async ({email, password, verificationLink}) => {
-        const data = await authRequest('signup', {email, password, verificationLink});
+        const data = await authRequest('signup', {email, password, verificationLink}, currentLanguage);
         let error = null;
         let success = false;
 
@@ -97,20 +98,20 @@ function useProvideAuth(defaultAccessToken) {
     };
 
     const signOut = async () => {
-        await fetch(`${host}/api/logout`, {method: 'POST'});
+        await fetch(`${host}/api/logout`, {method: 'POST', headers: {'Content-Type': 'application/json;charset=utf-8', 'Accept-Language': currentLanguage}});
 
         setAccessToken(null);
     };
 
     const forgotPassword = async ({email, resetPasswordLink}) => {
-        const data = await authRequest('forgot-password', {email, resetPasswordLink});
+        const data = await authRequest('forgot-password', {email, resetPasswordLink}, currentLanguage);
         const status = data.status === 'ok' ? 'success' : 'error';
 
         return {status};
     };
 
     const resetPassword = async (token, password) => {
-        const data = await authRequest('set-new-password', {token, password});
+        const data = await authRequest('set-new-password', {token, password}, currentLanguage);
         const status = data.status === 'ok' ? 'success' : 'error';
 
         return {status};

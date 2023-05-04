@@ -1,6 +1,6 @@
 const CompetitionNameRegExpTest = /^[A-Za-z][A-Za-z0-9_]{1,29}$/;
 
-function parseCompetitionName(value) {
+export function parseCompetitionName(value) {
     if (typeof value === 'number') {
         value = value.toString();
     }
@@ -11,8 +11,3 @@ function parseCompetitionName(value) {
 
     return value;
 }
-
-module.exports = {
-    parseCompetitionName
-}
-

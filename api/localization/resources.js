@@ -1,13 +1,11 @@
-const en = require('./en/server.json');
-const ru = require('./ru/server.json');
-const ja = require('./ja/server.json');
-const ua = require('./uk-UA/server.json');
+import en from './en/server.json' assert {type: 'json'};
+import ru from './ru/server.json' assert {type: 'json'};
+import ja from './ja/server.json' assert {type: 'json'};
+import ua from './uk-UA/server.json' assert {type: 'json'};
 
-module.exports = {
-    resources: {
-        en: {translation: en},
-        ru: {translation: ru},
-        ua: {translation: ua},
-        ja: {translation: ja}
-    }
+export const resources = {
+    en: {translation: en},
+    ru: {translation: ru},
+    ua: {translation: ua},
+    ja: {translation: ja}
 };

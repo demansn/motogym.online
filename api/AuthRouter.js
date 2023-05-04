@@ -1,9 +1,10 @@
-const express = require("express");
-const {getAccessToken, getRandomToken, verifyRandomToken} = require("./JWTUtils");
-const {hashPassword, comparePasswords} = require("./utils");
-const {services} = require("./ServiceRegistry");
-const {validateRegistrationInput} = require("./validators");
-const {ACCESS_LEVEL} = require("./config/AccessLevel");
+import express from 'express';
+
+
+import {hashPassword, comparePasswords, getAccessToken, getRandomToken, verifyRandomToken} from "./utils/utils.js";
+import {services} from "./ServiceRegistry.js";
+import {validateRegistrationInput} from "./validators/ValidateRegistrationInput.js";
+import {ACCESS_LEVEL} from "./config/AccessLevel.js";
 
 function errorHandler(e, res) {
     res.status(e.status).json({status: 'error', error: e.error});
@@ -23,7 +24,7 @@ async function addConfirmationTokenAndSendEmail(user, verificationLink) {
     await emailTransporter.sendEmailConfirmation(user.email, verificationLink, user.confirmationToken);
 }
 
-async function createAuthRouter() {
+export async function createAuthRouter() {
     const authRouter = express.Router();
 
     authRouter.post('/signup', async (req, res) => {
@@ -164,8 +165,4 @@ async function createAuthRouter() {
     });
 
     return authRouter;
-}
-
-module.exports = {
-    createAuthRouter
 }

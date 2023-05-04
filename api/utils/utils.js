@@ -1,17 +1,15 @@
-const crypto = require('crypto');
-const createRandomToken = function () {
-    return crypto.randomBytes(16).toString('hex');
-};
-const moment = require('moment');
-const bcrypt = require("bcryptjs");
+import moment from 'moment';
+import bcrypt from 'bcryptjs';
 
-async function hashPassword(password) {
+export * from './JWTUtils.js';
+
+export async function hashPassword(password) {
     const salt = await bcrypt.genSalt(10);
 
     return await bcrypt.hash(password, salt);
 }
 
-async function comparePasswords(passwordA, passwordB) {
+export async function comparePasswords(passwordA, passwordB) {
     return await bcrypt.compare(passwordA, passwordB);
 }
 
@@ -62,13 +60,13 @@ const stringTimeToMilliseconds = function(time) {
         .getTime();
 };
 
-const millisecondsToStringTime = function(milliseconds) {
+export const millisecondsToStringTime = function(milliseconds) {
     const time = moment(milliseconds);
 
     return `${time.minutes()}:${time.seconds()}:${time.milliseconds()}`
 }
 
-const sortByTime = function(resultA, resultB) {
+export const sortByTime = function(resultA, resultB) {
     const timeA = stringTimeToMilliseconds(resultA.time);
     const timeB = stringTimeToMilliseconds(resultB.time);
 
@@ -80,19 +78,9 @@ const sortByTime = function(resultA, resultB) {
     return 0;
 };
 
-const getGapTime = function(timeA, timeB) {
+export const getGapTime = function(timeA, timeB) {
     timeA = stringTimeToMilliseconds(timeA);
     timeB = stringTimeToMilliseconds(timeB);
 
     return round10((timeA / timeB * 100), -3);
-};
-
-module.exports = {
-    millisecondsToStringTime,
-    stringTimeToMilliseconds,
-    sortByTime,
-    getGapTime,
-    createRandomToken,
-    hashPassword,
-    comparePasswords
 };

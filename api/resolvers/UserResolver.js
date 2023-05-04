@@ -1,8 +1,8 @@
-const { validateProfileInput} = require("../validators");
-const { ObjectID } = require('mongodb');
-const {GraphQLError} = require("graphql");
+import {validateProfileInput} from "../validators/ValidateProfileIntput.js";
+import {ObjectId} from "mongodb";
+import {GraphQLError} from "graphql";
 
-const resolver = {
+export const UserResolver = {
     Trivial: {
         User: {
             id: (user) => user._id,
@@ -69,7 +69,7 @@ const resolver = {
                     await dataSources.fileStorage.removeFile(currentUser.profile.avatar);
                 }
 
-                const avatarID = ObjectID();
+                const avatarID = ObjectId();
 
                 currentUser.profile.avatar = await dataSources.fileStorage.addFile(file, 'avatars', avatarID);
 
@@ -124,5 +124,3 @@ const resolver = {
         }
     }
 };
-
-module.exports = resolver;

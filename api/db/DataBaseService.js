@@ -1,10 +1,10 @@
-const { MongoClient } = require('mongodb');
+import {MongoClient} from 'mongodb';
 const isDev = process.env.NODE_ENV !== 'production';
 const { MONGO_URI } = process.env;
 const MONGO_LOCAL_URI = 'mongodb://localhost:27017/motogym';
 const DB_URI = isDev ? MONGO_LOCAL_URI : MONGO_URI;
 
-class DataBaseService {
+export class DataBaseService {
     #db = null;
     async connect() {
         if (!this.#db) {
@@ -25,5 +25,3 @@ class DataBaseService {
         return this.#db;
     }
 }
-
-module.exports = {DataBaseService};

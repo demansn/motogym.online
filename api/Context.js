@@ -1,8 +1,8 @@
-const {services} = require("./ServiceRegistry");
-const {verifyAccessToken} = require("./JWTUtils");
-const {Collection} = require("./db/Collection");
-const fileStorage = require('./file-storage');
-const createContext = async ({_res, req, _connection}) => {
+import {services} from "./ServiceRegistry.js";
+import {verifyAccessToken} from "./utils/utils.js";
+import {Collection} from "./db/Collection.js";
+import fileStorage from "./file-storage/fileStorage.js";
+export const createContext = async ({_res, req, _connection}) => {
     try {
         console.log('create Context');
         const authorization = req.headers.authorization || '';
@@ -13,9 +13,12 @@ const createContext = async ({_res, req, _connection}) => {
         const emailTransporter = await services.get('emailTransporter');
         const currentUser = await verifyAccessToken(accessToken);
         const db = await services.get('db').getDB();
-        const competitions = new Collection('competitions');
-        const championships = new Collection('championships');
-        const typesCompetitions = new Collection('typescompetitions');
+        const collections = ['competitions', 'results', 'typescompetitions'];
+        const loaders = {};
+
+        collections.forEach((collection) => {
+            loaders[collection] = new Collection(collection);
+        });
 
         const hasRole = (accessLevel) => {
             let visitorAccessLevel = currentUser ? currentUser.accessLevel : 0;
@@ -23,12 +26,10 @@ const createContext = async ({_res, req, _connection}) => {
             return visitorAccessLevel >= accessLevel;
         };
 
-        return {currentUser, hasRole, emailTransporter, users, db, competitions, championships, typesCompetitions, fileStorage};
+        return {currentUser, hasRole, emailTransporter, users, db, fileStorage, ...loaders, loaders};
     } catch (e) {
         console.error(e);
 
         throw Error(e);
     }
 };
-
-module.exports = {createContext};

@@ -1,11 +1,11 @@
-const bcrypt = require('bcryptjs');
-const {jwtVerify, SignJWT} = require('jose');
+import bcrypt from 'bcryptjs';
+import {jwtVerify, SignJWT} from 'jose';
 const secretOrKey = process.env.SECRET_OR_KEY;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
-const getPayload = async function(token) {
+export const getPayload = async function(token) {
     if (!token) {
         return null;
     }
@@ -21,7 +21,7 @@ const getPayload = async function(token) {
     }
 };
 
-const getRandomToken = async function(payload, expirationTime = '1h') {
+export const getRandomToken = async function(payload, expirationTime = '1h') {
     try {
         return await new SignJWT(payload)
             .setProtectedHeader({ alg: 'HS256' })
@@ -34,7 +34,7 @@ const getRandomToken = async function(payload, expirationTime = '1h') {
     }
 }
 
-const verifyRandomToken = async function(token) {
+export const verifyRandomToken = async function(token) {
     try {
         const result = await jwtVerify(token, new TextEncoder().encode(RANDOM_TOKEN_SECRET));
 
@@ -44,7 +44,7 @@ const verifyRandomToken = async function(token) {
     }
 }
 
-const getAccessToken = async function(payload) {
+export const getAccessToken = async function(payload) {
     try {
         return await new SignJWT(payload)
             .setProtectedHeader({ alg: 'HS256' })
@@ -55,7 +55,7 @@ const getAccessToken = async function(payload) {
     }
 };
 
-const verifyAccessToken = async function(token) {
+export const verifyAccessToken = async function(token) {
     try {
         const result = await jwtVerify(token, new TextEncoder().encode(ACCESS_TOKEN_SECRET));
 
@@ -64,7 +64,7 @@ const verifyAccessToken = async function(token) {
         return null;
     }
 }
-const getRefreshToken = async function(user) {
+export const getRefreshToken = async function(user) {
     try {
         const payload = {email: user.email};
 
@@ -79,7 +79,7 @@ const getRefreshToken = async function(user) {
     }
 };
 
-const verifyRefreshToken = async function(token) {
+export const verifyRefreshToken = async function(token) {
     new Promise(async (res, rej) => {
         try {
             const result = await jwtVerify(token, new TextEncoder().encode(REFRESH_TOKEN_SECRET));
@@ -89,15 +89,4 @@ const verifyRefreshToken = async function(token) {
             rej(e);
         }
     });
-};
-
-module.exports = {
-    getToken: getAccessToken,
-    getRefreshToken,
-    verifyRefreshToken,
-    getAccessToken,
-    getPayload,
-    verifyRandomToken,
-    getRandomToken,
-    verifyAccessToken
 };
