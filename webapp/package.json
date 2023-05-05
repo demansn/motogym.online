@@ -13,15 +13,12 @@
     "lint": "next lint",
     "create-env": "printenv > .env",
     "gcp-build": "npm run build",
-    "deploy": "gcloud config set project motogym-online-web && gcloud app deploy app.yaml"
+    "deploy": "gcloud config set project motogym-online-web-app && gcloud app deploy app.yaml"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/demansn/motogym.online.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/demansn/motogym.online/issues"
   },
