@@ -1,17 +1,17 @@
 steps:
-- name: "node:18.x.x"
+- name: "node:"
   entrypoint: npm
-  args: ["i -w=webapp"]
-- name: "node:18.x.x"
+  args: ["i", "-w", "webapp"]
+- name: "node"
   entrypoint: npm
-  args: [ "run create-env -w=webapp"]
+  args: [ "run", "create-env", "-w", "webapp"]
   env:
     - 'SECRET_OR_KEY=${_SECRET_OR_KEY}'
     - 'API=${_API}'
     - 'PORT=${_PORT}'
-- name: "node:18.x.x"
+- name: "node"
   entrypoint: npm
-  args: ["run build -w=webapp"]
+  args: ["run", "build", "-w", "webapp"]
 - name: "gcr.io/cloud-builders/gcloud"
   dir: "webapp"
   args: ["app", "deploy", "--project", "motogym-online-web-app"]
