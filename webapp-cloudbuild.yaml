@@ -10,9 +10,8 @@ steps:
     - 'API=${_API}'
     - 'PORT=${_PORT}'
 - name: "node"
-  dir: "webapp"
   entrypoint: npm
-  args: ["run", "build"]
+  args: ["run build -w=webapp"]
 - name: "gcr.io/cloud-builders/gcloud"
   dir: "webapp"
   args: ["app", "deploy", "--project", "motogym-online-web-app"]
