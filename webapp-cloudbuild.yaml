@@ -6,9 +6,7 @@ steps:
   entrypoint: npm
   args: [ "run", "create-env", "-w", "webapp"]
   env:
-    - 'SECRET_OR_KEY=${_SECRET_OR_KEY}'
-    - 'API=${_API}'
-    - 'PORT=${_PORT}'
+    - 'NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}'
 - name: "node"
   entrypoint: npm
   args: ["run", "build", "-w", "webapp"]
