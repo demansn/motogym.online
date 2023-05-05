@@ -1,4 +1,4 @@
-import {isJwtTokenExpired} from "common/jwtUtils";
+import {isJwtTokenExpired} from "../../common/jwtUtils";
 import {AUTH_API} from "./configs";
 
 const authProvider = {

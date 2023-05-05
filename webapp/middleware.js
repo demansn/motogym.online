@@ -1,5 +1,5 @@
 import {NextResponse} from "next/server";
-import {isJwtTokenExpired} from "common/jwtUtils";
+import {isJwtTokenExpired} from "../common/jwtUtils";
 
 export async function middleware(req) {
 

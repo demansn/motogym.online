@@ -3,7 +3,7 @@ import {ApolloProvider, gql,} from '@apollo/client';
 import createApolloClient from "./createApolloClient";
 import {useTranslation} from "next-i18next";
 import {host} from "../config";
-import {getJwtTokenPayload} from "common/jwtUtils";
+import {getJwtTokenPayload} from "../../common/jwtUtils";
 import {authRequest} from "./utils";
 import {useLanguage} from "../hooks/useLanguage";
 
