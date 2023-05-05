@@ -1,4 +1,4 @@
-const allowlist = ['http://localhost:3000', 'http://localhost:3001'];
+const allowlist = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:8080', 'https://motogym-online-web-app.oa.r.appspot.com', 'https://studio.apollographql.com'];
 export const corsOptionsDelegate = function (req, callback) {
     let corsOptions;
 
