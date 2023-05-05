@@ -12,7 +12,6 @@
     "start": "next start -p 8080",
     "lint": "next lint",
     "create-env": "printenv > .env",
-    "gcp-build": "npm run build",
     "deploy": "gcloud config set project motogym-online-web-app && gcloud app deploy app.yaml"
   },
   "repository": {
