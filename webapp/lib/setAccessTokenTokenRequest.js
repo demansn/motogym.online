@@ -1,7 +1,7 @@
-import {host} from "../config";
+import {API_URL} from "../config";
 
 export async function setAccessTokenTokenRequest(accessToken) {
-    const result = await fetch(`${host}/api/login`, {
+    const result = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'

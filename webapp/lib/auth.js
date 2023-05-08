@@ -2,7 +2,7 @@ import React, {useState, useContext, createContext} from 'react';
 import {ApolloProvider, gql,} from '@apollo/client';
 import createApolloClient from "./createApolloClient";
 import {useTranslation} from "next-i18next";
-import {host} from "../config";
+import {API_URL} from "../config";
 import {getJwtTokenPayload} from "../../common/jwtUtils";
 import {authRequest} from "./utils";
 import {useLanguage} from "../hooks/useLanguage";
@@ -46,7 +46,7 @@ function useProvideAuth(defaultAccessToken) {
     };
 
     const signIn = async (email, password) => {
-        const response = await fetch(`${host}/api/login`, {
+        const response = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json;charset=utf-8', 'accept-language': currentLanguage},
             body: JSON.stringify({email, password}),
@@ -94,7 +94,7 @@ function useProvideAuth(defaultAccessToken) {
     };
 
     const signOut = async () => {
-        await fetch(`${host}/api/logout`, {method: 'POST', headers: {'Content-Type': 'application/json;charset=utf-8', 'Accept-Language': currentLanguage}});
+        await fetch(`${API_URL}/logout`, {method: 'POST', headers: {'Content-Type': 'application/json;charset=utf-8', 'Accept-Language': currentLanguage}});
 
         setAccessToken(null);
     };

@@ -16,7 +16,6 @@ export class EmailService {
 
     sendEmailConfirmation(email, verificationLink, token) {
         const link = `${verificationLink}?t=${token}`;
-        console.log(i18next);
 
         const message = `${i18next.t('You have just registered on motogym.online website. To confirm e-mail, click on the link')} ${link}`;
 
