@@ -1,15 +1,15 @@
 steps:
-- name: "node"
+- name: "node:18.0.0"
   entrypoint: npm
   dir: "webapp"
   args: ["i"]
-- name: "node"
+- name: "node:18.0.0"
   entrypoint: npm
   dir: "webapp"
   args: [ "run", "create-env"]
   env:
     - 'NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}'
-- name: "node"
+- name: "node:18.0.0"
   entrypoint: npm
   dir: "webapp"
   args: ["run", "build"]
