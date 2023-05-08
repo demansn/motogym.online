@@ -1,7 +1,6 @@
 const { i18n } = require('./next-i18next.config.js');
 
 const nextConfig = {
-  strictMode: true,
   reactStrictMode: true,
   i18n,
   images: {
