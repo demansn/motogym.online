@@ -7,7 +7,6 @@ import Router from "next/router";
 import withAppContext from "lib/withAppContext";
 import {Fragment} from "react";
 import {SiteHead} from "../components/SiteHead";
-import {host} from "../config";
 import {useLanguage} from "../hooks/useLanguage";
 
 export default function AuthorizationPage() {
@@ -33,7 +32,7 @@ export default function AuthorizationPage() {
         e.preventDefault();
 
         if (validateInputs()) {
-            signUp({email, password, verificationLink: `${host}/${locale}/email-verification` }).then(({error, success}) => {
+            signUp({email, password, verificationLink: `${location.origin}/${locale}/email-verification` }).then(({error, success}) => {
                 if (!success) {
                     setFormError(error);
                 } else {

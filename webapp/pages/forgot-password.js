@@ -4,8 +4,6 @@ import {useTranslation} from "next-i18next";
 import {useState} from "react";
 import validator from "validator";
 import withAppContext from "lib/withAppContext";
-import {authRequest} from "../lib/utils";
-import {host} from "../config";
 import {useLanguage} from "../hooks/useLanguage";
 import {useAuth} from "../lib/auth";
 
@@ -28,7 +26,7 @@ export default function ForgotPasswordPage() {
         }
         setInvalidEmail('');
 
-        const {status} = await forgotPassword({email, resetPasswordLink: `${host}/${locale}/reset-password`});
+        const {status} = await forgotPassword({email, resetPasswordLink: `${location.origin}/${locale}/reset-password`});
 
         setStatus(status === 'ok' ? 'success' : 'error');
     };
