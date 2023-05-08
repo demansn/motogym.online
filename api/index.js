@@ -1,4 +1,7 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+import i18next from "i18next";
 import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.js";
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -8,7 +11,6 @@ import {expressMiddleware} from '@apollo/server/express4';
 import {ApolloServerPluginDrainHttpServer} from '@apollo/server/plugin/drainHttpServer';
 import {createServer} from "http";
 
-dotenv.config();
 const port = process.env.PORT || 3003;
 
 import {services} from './ServiceRegistry.js';
@@ -21,10 +23,9 @@ import {UsersService} from "./db/UsersService.js";
 import {EmailService} from "./email-service/EmailService.js";
 import {createContext} from "./Context.js";
 import {corsOptionsDelegate} from "./corsOptionsDelegate.js";
-import i18next from "i18next";
 
 async function start() {
-    services.add('db', new DataBaseService());
+    services.add('db', new DataBaseService(process.env.MONGO_URI, process.env.MONGO_DB));
     services.add('users', new UsersService());
     services.add('emailTransporter', new EmailService(process.env.TRANSPORT_AUTH_USER, process.env.TRANSPORT_AUTH_PASS));
 

@@ -1,23 +1,12 @@
 import {jwtVerify, SignJWT} from 'jose';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
-export const getPayload = async function(token) {
-    if (!token) {
-        return null;
-    }
 
-    try {
-        const result = await jwtVerify(token, new TextEncoder().encode(ACCESS_TOKEN_SECRET));
-
-        return result.payload;
-    } catch (e) {
-        console.log(e);
-
-        return null;
-    }
-};
 
 export const getRandomToken = async function(payload, expirationTime = '1h') {
     try {
