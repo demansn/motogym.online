@@ -2,7 +2,7 @@ import {Button, Modal} from "react-bootstrap";
 import {T} from "./T";
 import React, {createContext, useContext, useState} from "react";
 
-const modalQuestionContext = createContext();
+const modalQuestionContext = createContext(undefined);
 
 export function useModalQuestion() {
     return useContext(modalQuestionContext);
