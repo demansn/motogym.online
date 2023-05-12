@@ -1,12 +1,11 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {BooleanInput, Loading, SimpleForm, TextInput, Title, useGetOne, useUpdate} from "react-admin";
+import {Loading, SimpleForm, TextInput, Title, useGetOne, useUpdate} from "react-admin";
 import {Card} from "@mui/material";
-import * as React from "react";
 
 export const CompetitionEdit = () => {
     const { id } = useParams();
     const { isLoading, data } = useGetOne("competitions", { id });
-    const [update, { isLoading: isSubmitting }] = useUpdate();
+    const [update] = useUpdate();
     const navigate = useNavigate();
     const onSubmit = (data) => {
         update(

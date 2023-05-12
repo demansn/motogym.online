@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {useGetOne, useUpdate, Title, BooleanInput, SimpleForm, TextInput} from "react-admin";
-import { Card} from "@mui/material";
+import {Card} from "@mui/material";
 
 export const DriverEdit = () => {
     const { id } = useParams();

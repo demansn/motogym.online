@@ -26,7 +26,7 @@ class App extends Component {
         const {dataProvider} = this.state;
 
         if (!dataProvider) {
-            return <div>Loading</div>;
+            return (<div>Loading</div>);
         }
 
         return (

@@ -1,6 +1,6 @@
-import {ApolloClient, InMemoryCache, gql, createHttpLink} from "@apollo/client";
+import {ApolloClient, InMemoryCache} from "@apollo/client";
 import {setContext} from "@apollo/client/link/context";
-const { createUploadLink } = require('apollo-upload-client')
+import { createUploadLink }  from 'apollo-upload-client';
 
 
 export class DataProvider {
