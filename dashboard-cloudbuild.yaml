@@ -1,0 +1,18 @@
+steps:
+- name: "node:18.0.0"
+  entrypoint: npm
+  args: ["i", "-w", "dashboard"]
+- name: "node:18.0.0"
+  entrypoint: npm
+  args: [ "run", "create-env", "-w", "dashboard"]
+  env:
+    - 'NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}'
+- name: "node:18.0.0"
+  entrypoint: npm
+  args: ["run", "build", "-w", "dashboard"]
+- name: "gcr.io/cloud-builders/gcloud"
+  dir: "webapp"
+  args: ["app", "deploy", "--project", "motogym-online-dashbaord"]
+timeout: "1600s"
+options:
+  logging: CLOUD_LOGGING_ONLY
