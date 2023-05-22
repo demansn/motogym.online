@@ -4,11 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "create-env": "printenv > .env"
+    "create-env": "printenv > .env",
+    "gcp-build": ""
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",
