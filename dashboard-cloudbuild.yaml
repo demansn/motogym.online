@@ -12,7 +12,7 @@ steps:
   args: ["run", "build", "-w", "dashboard"]
 - name: "gcr.io/cloud-builders/gcloud"
   dir: "webapp"
-  args: ["app", "deploy", "--project", "motogym-online-dashbaord"]
+  args: ["app", "deploy", "--project", "motogym-online-dashboard"]
 timeout: "1600s"
 options:
   logging: CLOUD_LOGGING_ONLY
