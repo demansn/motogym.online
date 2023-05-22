@@ -11,7 +11,7 @@ steps:
   entrypoint: npm
   args: ["run", "build", "-w", "dashboard"]
 - name: "gcr.io/cloud-builders/gcloud"
-  dir: "webapp"
+  dir: "dashboard"
   args: ["app", "deploy", "--project", "motogym-online-dashboard"]
 timeout: "1600s"
 options:
