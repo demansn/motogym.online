@@ -6,7 +6,7 @@ steps:
   entrypoint: npm
   args: [ "run", "create-env", "-w", "dashboard"]
   env:
-    - 'NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}'
+    - 'VITE_PUBLIC_API_URL=${_VITE_PUBLIC_API_URL}'
 - name: "node:18.0.0"
   entrypoint: npm
   args: ["run", "build", "-w", "dashboard"]

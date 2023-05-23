@@ -3,7 +3,7 @@
 .gitignore
 .eslintrc.cjs
 package.json
-index.html
+/index.html
 vite.config.js
 node_modules/
 src/
